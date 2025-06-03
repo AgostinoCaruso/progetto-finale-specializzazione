@@ -1,5 +1,7 @@
 package progetto.finale.org.progetto_finale_specializzazione.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,10 +12,10 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "game_image")
-public class GameImage {
+@Table(name = "images")
+public class Images {
     
-    public GameImage(){}
+    public Images(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,7 @@ public class GameImage {
 
     @ManyToOne
     @JoinColumn(name = "game_id")
+    @JsonBackReference
     private Games game;
 
 

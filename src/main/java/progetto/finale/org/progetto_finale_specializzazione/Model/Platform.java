@@ -19,7 +19,7 @@ public class Platform {
     private String name;
 
     @NotBlank(message = "This camp cannot be null or blank")
-    public String image;
+    public String logoUrl;
 
     public Integer getId() {
         return this.id;
@@ -38,11 +38,11 @@ public class Platform {
     }
 
     public String getImage() {
-        return this.image;
+        return this.logoUrl;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 
 }

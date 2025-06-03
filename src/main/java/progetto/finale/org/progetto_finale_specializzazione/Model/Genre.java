@@ -40,12 +40,13 @@ public class Genre {
         this.name = name;
     }
 
-    public Games getGames() {
-        return this.games;
+    public Games getGame() {
+        return this.game;
     }
 
-    public void setGames(Games games) {
-        this.games = games;
+    public void setGame(Games game) {
+        this.game = game;
     }
+
 
 }

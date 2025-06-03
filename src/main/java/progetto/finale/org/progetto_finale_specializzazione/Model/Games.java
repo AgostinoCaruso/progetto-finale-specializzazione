@@ -3,6 +3,9 @@ package progetto.finale.org.progetto_finale_specializzazione.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,11 +40,13 @@ public class Games {
 
     //qua collego ad un gioco uno o piu generi
     @OneToMany(mappedBy = "game")
+    @JsonManagedReference
     private List<Genre> genre = new ArrayList<>();
 
     //qua collego ad un gioco una o piu immagini
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private List<GameImage> images = new ArrayList<>();
+    @JsonManagedReference
+    private List<Images> images = new ArrayList<>();
 
 
     public Integer getId() {
@@ -69,11 +74,11 @@ public class Games {
     }
 
 
-    public List<GameImage> getImages() {
+    public List<Images> getImages() {
         return this.images;
     }
 
-    public void setImages(List<GameImage> images) {
+    public void setImages(List<Images> images) {
         this.images = images;
     }
 
@@ -93,11 +98,11 @@ public class Games {
         this.developer = developer;
     }
 
-    public Genre getGenre() {
+    public List<Genre> getGenre() {
         return this.genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(List<Genre> genre) {
         this.genre = genre;
     }
 
