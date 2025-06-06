@@ -3,23 +3,27 @@ package progetto.finale.org.progetto_finale_specializzazione.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "games")
 public class Games {
 
-    public Games(){
+    public Games() {
 
     }
 
@@ -30,7 +34,10 @@ public class Games {
     @NotBlank(message = "This camp cannot be null, blank")
     private String name;
 
-    private Integer score;
+    @Min(1)
+    @Max(10)
+    @NotNull(message = "This camp cannot be null or blank")
+    private Double score;
 
     @NotBlank(message = "This camp cannot be null or blank")
     private String publisher;
@@ -38,16 +45,20 @@ public class Games {
     @NotBlank(message = "This camp cannot be null or blank")
     private String developer;
 
-    //qua collego ad un gioco uno o piu generi
+    @Lob
+    @Column(length=500)
+    @NotBlank(message = "This camp cannot be null or blank")
+    private String description;
+
+    // qua collego ad un gioco uno o piu generi
     @OneToMany(mappedBy = "game")
     @JsonManagedReference
     private List<Genre> genre = new ArrayList<>();
 
-    //qua collego ad un gioco una o piu immagini
+    // qua collego ad un gioco una o piu immagini
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Images> images = new ArrayList<>();
-
 
     public Integer getId() {
         return this.id;
@@ -65,14 +76,21 @@ public class Games {
         this.name = name;
     }
 
-    public Integer getScore() {
+    public Double getScore() {
         return this.score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public List<Images> getImages() {
         return this.images;

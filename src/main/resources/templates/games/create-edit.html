@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{fragments :: head}" />
+</head>
+
+<body class="bg-white">
+    <div class=" ">
+        <!-- Navbar Bootstrap -->
+        <div th:replace="~{fragments :: navbar}"></div>
+
+        <!-- Main Content -->
+        <main class=" mt-4 container-md">
+
+            <form th:action="${edit} ? @{/games/edit/{id}(id=*{id})} : @{/games/create}" method="post"
+                th:object="${game}">
+                <div class="mb-3">
+                    <label for="name" class="form-label fw-bold">*Name</label>
+                    <input type="text" class="form-control" id="name" name="name" th:field="*{name}"
+                        th:errorClass="is-invalid" />
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
+                        <ul>
+                            <li th:each="error: ${#fields.errors('name')}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="publisher" class="form-label fw-bold">*Publisher</label>
+                    <input type="text" class="form-control" id="publisher" publisher="publisher" th:field="*{publisher}"
+                        th:errorClass="is-invalid" />
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('publisher')}">
+                        <ul>
+                            <li th:each="error: ${#fields.errors('publisher')}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="developer" class="form-label fw-bold">*Developer</label>
+                    <input type="text" class="form-control" id="developer" developer="developer" th:field="*{developer}"
+                        th:errorClass="is-invalid" />
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('developer')}">
+                        <ul>
+                            <li th:each="error: ${#fields.errors('developer')}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-bold">*Description</label>
+                    <textarea class="form-control" id="description" name="description" th:field="*{description}"
+                        th:errorClass="is-invalid" rows="5"></textarea>
+
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}">
+                        <ul>
+                            <li th:each="error : ${#fields.errors('description')}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div th:each="img, iterStat : *{images}" class="mb-3">
+                    <input type="hidden" th:field="*{images[__${iterStat.index}__].id}" />
+
+                    <label th:for="'imagePath' + ${iterStat.index}" class="form-label fw-bold">Image Path</label>
+                    <input type="text" class="form-control" th:id="'imagePath' + ${iterStat.index}"
+                        th:field="*{images[__${iterStat.index}__].imagePath}" />
+                </div>
+
+                <!-- <form th:action="@{/games/add-image}" method="post" th:object="${game}">
+                    <input type="hidden" th:field="*{id}" />
+                    <button class="btn btn-outline-secondary mb-3" type="submit">Aggiungi Immagine</button>
+                </form> -->
+
+                <label class="form-label fw-bold">Voto</label>
+                <div class="star-rating d-flex flex-column w-25 mb-4">
+                    <div class="d-flex align-items-center mb-1">
+                        <input type="radio" id="star5" name="score" value="2" th:field="*{score}" />
+                        <label for="star5" title="5 stelle" class="ms-2">&#9733; 1</label>
+                    </div>
+                    <div class="d-flex align-items-center mb-1">
+                        <input type="radio" id="star4" name="score" value="4" th:field="*{score}" />
+                        <label for="star4" title="4 stelle" class="ms-2">&#9733; 2</label>
+                    </div>
+                    <div class="d-flex align-items-center mb-1">
+                        <input type="radio" id="star3" name="score" value="6" th:field="*{score}" />
+                        <label for="star3" title="3 stelle" class="ms-2">&#9733; 3</label>
+                    </div>
+                    <div class="d-flex align-items-center mb-1">
+                        <input type="radio" id="star2" name="score" value="8" th:field="*{score}" />
+                        <label for="star2" title="2 stelle" class="ms-2">&#9733; 4</label>
+                    </div>
+                    <div class="d-flex align-items-center mb-1">
+                        <input type="radio" id="star1" name="score" value="10" th:field="*{score}" />
+                        <label for="star1" title="1 stella" class="ms-2">&#9733; 5</label>
+                    </div>
+                </div>
+
+                <!-- genre -->
+                <!-- <div class="form-check" th:each="ingrediente : ${ingredienti}">
+                    <input type="checkbox" th:id="|ingrediente-${ingrediente.id}|" th:value="${ingrediente.id}"
+                        th:field="${pizza.ingredienti}">
+                    <label th:for="|ingrediente-${ingrediente.id}|" class="form-check-label"
+                        th:text="${ingrediente.nome}"></label>
+                </div> -->
+
+                <!-- platform -->
+                <!-- <div class="form-check" th:each="ingrediente : ${ingredienti}">
+                    <input type="checkbox" th:id="|ingrediente-${ingrediente.id}|" th:value="${ingrediente.id}"
+                        th:field="${pizza.ingredienti}">
+                    <label th:for="|ingrediente-${ingrediente.id}|" class="form-check-label"
+                        th:text="${ingrediente.nome}"></label>
+                </div> -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Save the game</button>
+                    <button type="reset" class="btn btn-warning">Reset fields</button>
+                </div>
+            </form>
+        </main>
+        <div th:replace="~{fragments :: footer}"></div>
+    </div>
+
+    <!-- Script Bootstrap -->
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

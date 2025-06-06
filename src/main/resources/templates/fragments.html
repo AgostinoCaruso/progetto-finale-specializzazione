@@ -8,36 +8,266 @@
 </head>
 
 <body>
+
+    <div th:fragment="head">
+        <meta charset="UTF-8">
+        <title>GamesSpot</title>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}
+    " />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/style.css}">
+    </div>
+
     <header>
         <!-- <div th:replace="~{fragments :: navbar}"></div> -->
     </header>
-    <main class="container">
-        
-        <nav th:fragment="navbar" class="navbar navbar-expand-md navbar-dark bg-dark px-3">
-            <!-- Logo -->
-            <a class="navbar-brand mx-auto mx-md-0" th:href="@{/games}">GamesSpot</a>
+    <main class="">
 
-            <!-- Toggler -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
-                aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <!-- /NAVBAR////////////////////// -->
 
-            <!-- Menu -->
-            <div class="collapse navbar-collapse" id="navbarMenu">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/home}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/games}">Games</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/about}">About</a>
-                    </li>
-                </ul>
+        <nav th:fragment="navbar" class="sticky-top container-fluid navbar navbar-expand-md navbar-dark bg-dark px-3">
+            <div class="container-xl">
+                <!-- Logo -->
+                <a class="navbar-brand mx-auto mx-md-0" th:href="@{/games}">GamesSpot</a>
+
+                <!-- Toggler -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+                    aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Menu -->
+                <div class="collapse navbar-collapse" id="navbarMenu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/games}">Games</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/genre}">Genre</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/games/create}">Add new Game</a>
+                        </li>
+                    </ul>
+                </div>
+                <i class="fas fa-grip-lines-vertical text-white px-3"></i>
+                <div class="text-white">
+                    User: <span sec:authentication="name" class="fw-bold me-2"></span>
+                    Roles: <span sec:authentication="principal.authorities" class="fst-italic me-2"></span>
+                    <a class="btn btn-sm btn-outline-primary" href="/logout">Sign out</a>
+                </div>
             </div>
         </nav>
+        <!-- /SCORE////////////////////////////// -->
+
+        <div th:fragment="score-star(game)">
+            <div>
+                <span th:each="i : ${#numbers.sequence(1, T(java.lang.Math).floor(game.score / 2))}">
+                    <i class="fas fa-star text-warning"></i>
+                </span>
+
+                <i th:if="${(game.score / 2) - T(java.lang.Math).floor(game.score / 2) >= 0.5}"
+                    class="fas fa-star-half-alt text-warning"></i>
+            </div>
+        </div>
+
+        <!-- /CARD-INDEX///////////////////// -->
+
+        <div th:fragment="card-index">
+            <div class="card w-100 h-100 d-flex flex-column bg-light">
+                <!-- ANCORABILE: Tutta l'area cliccabile escluso il delete -->
+                <a th:href="@{/games/{id}(id=*{id})}" class="text-decoration-none text-reset flex-grow-1">
+                    <div class="card-body fixed-height-card d-flex flex-column card-text">
+                        <div>
+                            <h3 th:text="*{name}">Game Name</h3>
+                            <h5>
+                                <strong>Publisher:</strong>
+                                <em th:text="*{publisher}">Publisher Name</em>
+                            </h5>
+                            <h5>
+                                <strong>Developer:</strong>
+                                <em th:text="*{developer}">Developer Name</em>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="img overflow-hidden text-center flex-grow-1 mb-2 card-img">
+                        <img th:src="${game.images[0].imagePath}" alt="" class="img-fluid w-100 h-100 object-fit-cover rounded px-1">
+                    </div>
+                </a>
+
+                <!-- AREA NON CLICCABILE (con pulsanti) -->
+                <div class="px-3 pb-3 d-flex justify-content-between align-items-center card-bot">
+                    <!-- SCORE -->
+                    <div th:replace="~{fragments :: score-star(${game})}"></div>
+
+                    <div th:replace="~{fragments :: btn-update-delete}" />
+
+                </div>
+            </div>
+        </div>
+
+        <!-- /CARD-SHOW////////////////////////// -->
+
+        <div th:fragment="card-show">
+            <div class="mt-4 d-flex flex-column align-items-center justify-content-center container-sm">
+                <div class="card mt-4 fixed-height-card-show bg-light">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3 th:text="*{name}">Game Name</h3>
+                                <h5>
+                                    <strong>Publisher:</strong>
+                                    <em th:text="*{publisher}">Publisher Name</em>
+                                </h5>
+                                <h5>
+                                    <strong>Developer:</strong>
+                                    <em th:text="*{developer}">Developer Name</em>
+                                </h5>
+                            </div>
+                            <div class="d-flex flex-column justify-content-around ">
+                                <div th:replace="~{fragments :: score-star(${game})}"></div>
+                                <div th:replace="~{fragments :: btn-update-delete}" />
+                            </div>
+                        </div>
+
+                        <!-- Inizio carosello Bootstrap -->
+                        <div th:id="'carouselGame' + ${game.id}" class="carousel slide bg-dark" data-bs-ride="carousel">
+
+                            <!-- Indicatori -->
+                            <div class="carousel-indicators">
+
+                                <button type="button" th:each="img, stat : *{images}"
+                                    th:data-bs-target="'#carouselGame' + ${game.id}" th:data-bs-slide-to="${stat.index}"
+                                    th:classappend="${stat.index == 0} ? 'active' : ''" aria-current="true"
+                                    th:aria-label="'Slide ' + (${stat.index} + 1)">
+                                </button>
+                            </div>
+
+                            <!-- Slide immagini -->
+                            <div class="carousel-inner">
+                                <div th:each="img, stat : *{images}"
+                                    th:class="'carousel-item ' + (${stat.index == 0} ? 'active' : '')">
+                                    <img th:src="${img.imagePath}" class="d-block w-100" alt="Game Image" />
+                                </div>
+                            </div>
+
+                            <!-- Controlli precedente / successivo -->
+                            <button class="carousel-control-prev" type="button"
+                                th:data-bs-target="'#carouselGame' + ${game.id}" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                th:data-bs-target="'#carouselGame' + ${game.id}" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+
+                        </div>
+                        <!-- Fine carosello -->
+                    </div>
+                </div>
+
+
+                <div class="d-flex align-items-start w-100 mt-5">
+                    <h3>
+                        <strong>Description: </strong>
+                        <em th:text="*{description}">Publisher Name</em>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!-- /FOOTER///////////////////////////// -->
+
+        <div th:fragment="footer">
+            <footer class="site-footer mt-5 bg-dark">
+                <div class="footer-container text-light">
+                    <div class="footer-section">
+                        <h4>Informazioni</h4>
+                        <ul>
+                            <li><a href="#">Chi siamo</a></li>
+                            <li><a href="#">Contatti</a></li>
+                            <li><a href="#">Lavora con noi</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Supporto</h4>
+                        <ul>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Assistenza clienti</a></li>
+                            <li><a href="#">Resi e rimborsi</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Legale</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Termini di servizio</a></li>
+                            <li><a href="#">Cookie</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Seguici</h4>
+                        <ul class="social-links">
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">Instagram</a></li>
+                            <li><a href="#">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Il Tuo Sito. Tutti i diritti riservati.</p>
+                </div>
+            </footer>
+
+        </div>
+        <!-- /UPDATE DELETE BUTTON -->
+        <div th:fragment="btn-update-delete">
+            <div class="d-flex align-self-start gap-1">
+                <!-- UPDATE -->
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/games/edit/{id}(id=*{id})}" class="btn btn-warning">Update</a>
+                </div>
+
+                <!-- DELETE BUTTON + MODALE -->
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <!-- Bottone visibile per aprire la modale -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#delete-modal-' + *{id}">
+                        Delete
+                    </button>
+
+                    <!-- MODALE -->
+                    <div class="modal fade" th:id="'delete-modal-' + *{id}" tabindex="-1" aria-labelledby="delete-modal"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                        Deleting [[*{name}]]
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you wanna delete:
+                                    <strong>[[*{name}]]</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <form class="d-inline-block" th:action="@{/games/delete/{id}(id=${game.id})}"
+                                        method="post">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fine modale -->
+                </div>
+            </div>
+        </div>
     </main>
     <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
 </body>

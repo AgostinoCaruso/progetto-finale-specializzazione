@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <div th:replace="~{fragments :: head}"/>
+    <div th:replace="~{fragments :: head}" />
+
 </head>
 
 <body class="bg-white">
@@ -11,15 +12,9 @@
         <div th:replace="~{fragments :: navbar}"></div>
 
         <!-- Main Content -->
-        <main class=" mt-4 container-md">
-            <section class="row">
-                <div th:each="game : ${games}" th:object="${game}" class="d-flex col-3 mb-2 mt-2">
-
-                    <!-- card-index-fragments -->
-                    <div th:replace="~{fragments :: card-index}" />
-                </div>
-            </section>
-
+        <main class=" "
+            th:object="${game}">
+           <div th:replace="~{fragments :: card-show}"/>
         </main>
         <div th:replace="~{fragments :: footer}"></div>
     </div>

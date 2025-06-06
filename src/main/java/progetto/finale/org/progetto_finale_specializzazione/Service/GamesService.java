@@ -10,12 +10,31 @@ import progetto.finale.org.progetto_finale_specializzazione.Repository.GamesRepo
 
 @Service
 public class GamesService {
-    
+
     @Autowired
     private GamesRepository gamesRepository;
 
-    public List<Games> findAll(){
-        
+    public List<Games> findAll() {
+
         return gamesRepository.findAll();
+    }
+
+    public Games getById(Integer id) {
+
+        return gamesRepository.findById(id).get();
+    }
+
+    public Games create(Games game) {
+
+        return gamesRepository.save(game);
+    }
+
+    public Games update(Games game) {
+
+        return gamesRepository.save(game);
+    }
+
+    public void delete(Integer id) {
+        gamesRepository.deleteById(id);
     }
 }
