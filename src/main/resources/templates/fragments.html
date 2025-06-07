@@ -46,7 +46,7 @@
                             <a class="nav-link" th:href="@{/genre}">Genre</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/games/create}">Add new Game</a>
+                            <a class="nav-link" th:href="@{/platform}">Platform</a>
                         </li>
                     </ul>
                 </div>
@@ -91,7 +91,8 @@
                         </div>
                     </div>
                     <div class="img overflow-hidden text-center flex-grow-1 mb-2 card-img">
-                        <img th:src="${game.images[0].imagePath}" alt="" class="img-fluid w-100 h-100 object-fit-cover rounded px-1">
+                        <img th:src="${game.images[0].imagePath}" alt=""
+                            class="img-fluid w-100 h-100 object-fit-cover rounded px-1">
                     </div>
                 </a>
 
@@ -267,6 +268,20 @@
                     <!-- Fine modale -->
                 </div>
             </div>
+        </div>
+
+        <!-- / SEARCH BAR-GAMES/////////////////////// -->
+        <div th:fragment="search(type)">
+            <div class="d-flex my-4">
+                <form class="col-md-6 d-flex ms-auto flex-grow-1" th:action="@{'/' + ${type}}" method="get">
+                    <div class="input-group">
+                        <input type="text" name="search" th:value="${search}" class="form-control"
+                            placeholder="Search by name..." aria-label="Search" />
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </main>
     <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>

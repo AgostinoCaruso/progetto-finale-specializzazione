@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
@@ -26,12 +27,19 @@ public class GamesController {
     private GamesService gamesService;
 
     @GetMapping
-    public String index(Model model, Authentication authentication) {
+    public String index(@RequestParam(name = "search", required = false) String search, Model model,
+            Authentication authentication) {
 
         List<Games> games;
-        games = gamesService.findAll();
 
+        if (search != null) {
+            games = gamesService.findByName(search);
+        } else {
+            games = gamesService.findAll();
+        }
+        model.addAttribute("search", search);
         model.addAttribute("games", games);
+        model.addAttribute("type", "games");
         return ("games/index");
     }
 
@@ -71,7 +79,7 @@ public class GamesController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model){
+    public String edit(@PathVariable Integer id, Model model) {
 
         model.addAttribute("game", gamesService.getById(id));
         model.addAttribute("edit", true);
@@ -79,13 +87,13 @@ public class GamesController {
     }
 
     @PostMapping("/edit/{id}")
-    public String update(@Valid @ModelAttribute("game") Games game, BindingResult bindingResult, Model model){
+    public String update(@Valid @ModelAttribute("game") Games game, BindingResult bindingResult, Model model) {
 
         for (Images img : game.getImages()) {
             img.setGame(game);
         }
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             model.addAttribute("edit", true);
             return "games/create-edit";
         }
@@ -94,10 +102,9 @@ public class GamesController {
 
         return "redirect:/games";
     }
-    
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id){
+    public String delete(@PathVariable Integer id) {
 
         gamesService.delete(id);
         return "redirect:/games";

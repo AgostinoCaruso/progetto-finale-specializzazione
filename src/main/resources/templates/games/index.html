@@ -2,16 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <div th:replace="~{fragments :: head}"/>
+    <div th:replace="~{fragments :: head}" />
 </head>
 
 <body class="bg-white">
     <div class=" ">
         <!-- Navbar Bootstrap -->
         <div th:replace="~{fragments :: navbar}"></div>
-
         <!-- Main Content -->
         <main class=" mt-4 container-md">
+            <div class="row align-items-center px-3">
+                <div class="col-md-2">
+                    <a class="btn btn-primary w-100" th:href="@{/games/create}">Add new Game</a>
+                </div>
+                <div class="col-md-10">
+                    <div th:replace="~{fragments :: search('games')}" />
+                </div>
+            </div>
+
             <section class="row">
                 <div th:each="game : ${games}" th:object="${game}" class="d-flex col-3 mb-2 mt-2">
 
@@ -19,7 +27,6 @@
                     <div th:replace="~{fragments :: card-index}" />
                 </div>
             </section>
-
         </main>
         <div th:replace="~{fragments :: footer}"></div>
     </div>

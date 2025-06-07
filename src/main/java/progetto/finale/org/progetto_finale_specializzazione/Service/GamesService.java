@@ -18,6 +18,9 @@ public class GamesService {
 
         return gamesRepository.findAll();
     }
+    public List<Games> findByName(String search){
+        return gamesRepository.findByNameContainingIgnoreCase (search);
+    }
 
     public Games getById(Integer id) {
 

@@ -23,7 +23,7 @@ public class Genre {
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Games game;
-
+    
     public Integer getId() {
         return this.id;
     }

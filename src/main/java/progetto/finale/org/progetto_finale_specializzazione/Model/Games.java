@@ -53,7 +53,11 @@ public class Games {
     // qua collego ad un gioco uno o piu generi
     @OneToMany(mappedBy = "game")
     @JsonManagedReference
-    private List<Genre> genre = new ArrayList<>();
+    private List<Genre> genres = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game")
+    @JsonManagedReference
+    private List<Platform> platforms = new ArrayList<>();
 
     // qua collego ad un gioco una o piu immagini
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
@@ -117,11 +121,19 @@ public class Games {
     }
 
     public List<Genre> getGenre() {
-        return this.genre;
+        return this.genres;
     }
 
-    public void setGenre(List<Genre> genre) {
-        this.genre = genre;
+    public void setGenre(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public List<Platform> getPlatforms() {
+        return this.platforms;
+    }
+
+    public void setPlatforms(List<Platform> platforms) {
+        this.platforms = platforms;
     }
 
 }
