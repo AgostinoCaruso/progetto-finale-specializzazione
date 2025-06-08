@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.GamesRepository;
 
 @Service
@@ -45,5 +46,9 @@ public class GamesService {
 
     public void delete(Integer id) {
         gamesRepository.deleteById(id);
+    }
+
+    public List<Games> findByGenreOrderByNameAsc(Genres genres){
+        return gamesRepository.findByGenresOrderByNameAsc(genres);
     }
 }

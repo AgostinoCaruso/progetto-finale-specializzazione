@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
+import progetto.finale.org.progetto_finale_specializzazione.Service.GamesService;
 import progetto.finale.org.progetto_finale_specializzazione.Service.GenresService;
 
 @Controller
@@ -25,6 +27,9 @@ public class GenresController {
 
     @Autowired
     private GenresService genresService;
+
+    @Autowired
+    private GamesService gamesService;
 
     @GetMapping
     public String index(@RequestParam(name = "search", required = false) String search, Model model,
@@ -47,6 +52,9 @@ public class GenresController {
     public String show(@PathVariable Integer id, Model model) {
 
         Genres genre = genresService.getById(id);
+
+        List<Games> gamesSorted = gamesService.findByGenreOrderByNameAsc(genre);
+        genre.setGames(gamesSorted);
         model.addAttribute("genre", genre);
 
         return "genres/show";
@@ -62,7 +70,8 @@ public class GenresController {
     }
 
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("genre") Genres formGenre, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String store(@Valid @ModelAttribute("genre") Genres formGenre, BindingResult bindingResult, Model model,
+            RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
 
@@ -70,7 +79,8 @@ public class GenresController {
         }
 
         genresService.create(formGenre);
-        redirectAttributes.addFlashAttribute("successMessage", "You succesfully created a new genre!");
+        redirectAttributes.addFlashAttribute("successMessage",
+                String.format("You succesfully created a new genre %s !", formGenre.getName()));
         return "redirect:/genres";
     }
 
@@ -84,20 +94,25 @@ public class GenresController {
     }
 
     @PostMapping("/edit/{id}")
-    public String update(@Valid @ModelAttribute("genre") Genres genre, BindingResult bindingResult, Model model) {
+    public String update(@Valid @ModelAttribute("genre") Genres genre, BindingResult bindingResult, Model model,
+            RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("edit", true);
             return "genres/create-edit";
         }
 
         genresService.update(genre);
+        redirectAttributes.addFlashAttribute("successMessage",
+                String.format("You succesfully updated the genre %s !", genre.getName()));
 
         return "redirect:/genres";
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
 
+        redirectAttributes.addFlashAttribute("errorMessage",
+                String.format("You successfully deleted the genre %s !", genresService.getById(id).getName()));
         genresService.delete(id);
         return "redirect:/genres";
     }

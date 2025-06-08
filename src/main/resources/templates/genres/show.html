@@ -6,6 +6,16 @@
     <style>
         body {
             background: linear-gradient(to right, #ece9e6, #ffffff);
+            /*min-height: 100vh;
+            display: flex;
+            flex-direction: column; */
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        #page-container {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -39,7 +49,7 @@
 </head>
 
 <body>
-    <div>
+    <div id="page-container">
         <!-- Navbar -->
         <div th:replace="~{fragments :: navbar}"></div>
 
@@ -50,12 +60,13 @@
 
                 <div th:if="*{games.size() > 0}">
                     <h5>Games for this genre:</h5>
-                    <ul class="list-unstyled row">
+                    <ul class="list-unstyled row ">
                         <li th:each="game : *{games}" th:class="${genre.games.size() == 1} ? 'col-12' : 'col-6'">
-                            <a class="card text-decoration-none card-hover-zoom"
+                            <a class="my-3 card text-decoration-none card-hover-zoom"
                                 th:href="@{/games/{id}(id=${game.id})}">
                                 <div class="card-body">
-                                    <h4 th:text="${game.name}" />
+                                    <h4
+                                        th:text="${game.name.length() > 20} ? ${game.name.substring(0,20)} + '...' : ${game.name}" />
                                 </div>
                             </a>
                         </li>

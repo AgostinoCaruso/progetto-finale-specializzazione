@@ -79,10 +79,10 @@
                 <a th:href="@{/games/{id}(id=*{id})}" class="text-decoration-none text-reset flex-grow-1">
                     <div class="card-body fixed-height-card d-flex flex-column card-text">
                         <div>
-                            <h3
-                                th:text="${game.name.length() > 15} ? ${game.name.substring(0, 15)} + '...' : ${game.name}">
+                            <h4
+                                th:text="${game.name.length() > 20} ? ${game.name.substring(0, 20)} + '...' : ${game.name}">
                                 Game Name
-                            </h3>
+                            </h4>
                             <h5>
                                 <strong>Publisher:</strong>
                                 <em th:text="*{publisher}">Publisher Name</em>
@@ -130,6 +130,10 @@
                                 <h5>
                                     <strong>Developer:</strong>
                                     <em th:text="*{developer}">Developer Name</em>
+                                </h5>
+                                <h5>
+                                    <strong>Price:</strong>
+                                    <em th:text="*{price} + '$'"></em>
                                 </h5>
                             </div>
                             <div class="d-flex flex-column justify-content-around ">
@@ -213,9 +217,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -479,7 +480,7 @@
             </div>
         </div>
         <div th:fragment="toast-error">
-            <div th:if="${errorMessage}" class="toast-container position-fixed top-5 end-0 p-3" style="z-index: 9999">
+            <div th:if="${errorMessage}" class="toast-container position-fixed top-0 start-0 p-3" style="z-index: 9999">
                 <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive"
                     aria-atomic="true">
                     <div class="d-flex">
@@ -489,6 +490,16 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div th:fragment="toast-script">
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+                    toastElList.forEach(function (toastEl) {
+                        new bootstrap.Toast(toastEl).show();
+                    });
+                });
+            </script>
         </div>
     </main>
     <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>

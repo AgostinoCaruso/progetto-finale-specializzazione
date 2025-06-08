@@ -11,6 +11,9 @@
         <div th:replace="~{fragments :: navbar}"></div>
         <!-- Main Content -->
         <main class=" mt-4 container-md">
+            <div th:replace="~{fragments :: toast-success}"></div>
+            <div th:replace="~{fragments :: toast-error}"></div>
+
             <div class="row align-items-center px-3">
                 <div class="col-md-2">
                     <a class="btn btn-primary w-100" th:href="@{/games/create}">Add new Game</a>
@@ -31,6 +34,7 @@
 
     <!-- Script Bootstrap -->
     <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+    <div th:replace="~{fragments :: toast-script}"/>
 </body>
 
 </html>

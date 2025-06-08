@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
@@ -65,7 +66,7 @@ public class GamesController {
 
         Games game = new Games();
         game.getImages().add(new Images());
-        
+
         model.addAttribute("game", game);
         model.addAttribute("platforms", platformsService.findAll());
         model.addAttribute("genres", genresService.findAll());
@@ -74,7 +75,8 @@ public class GamesController {
     }
 
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("game") Games formGame, BindingResult bindingResult, Model model) {
+    public String store(@Valid @ModelAttribute("game") Games formGame, BindingResult bindingResult, Model model,
+            RedirectAttributes redirectAttributes) {
 
         // Ricollega ogni immagine al gioco (evita il problema game_id = null)
         for (Images img : formGame.getImages()) {
@@ -89,6 +91,8 @@ public class GamesController {
         }
 
         gamesService.create(formGame);
+        redirectAttributes.addFlashAttribute("successMessage", String.format("You succesfully created a new game: %s !", formGame.getName()));
+
         return "redirect:/games";
     }
 
@@ -103,7 +107,8 @@ public class GamesController {
     }
 
     @PostMapping("/edit/{id}")
-    public String update(@Valid @ModelAttribute("game") Games game, BindingResult bindingResult, Model model) {
+    public String update(@Valid @ModelAttribute("game") Games game, BindingResult bindingResult, Model model,
+            RedirectAttributes redirectAttributes) {
 
         for (Images img : game.getImages()) {
             img.setGame(game);
@@ -117,13 +122,15 @@ public class GamesController {
         }
 
         gamesService.update(game);
+        redirectAttributes.addFlashAttribute("successMessage", String.format("You succesfully updated a game: %s !", game.getName()));
 
         return "redirect:/games";
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
 
+        redirectAttributes.addFlashAttribute("errorMessage", String.format("You successfully deleted the game: %s !", gamesService.getById(id).getName()));
         gamesService.delete(id);
         return "redirect:/games";
     }

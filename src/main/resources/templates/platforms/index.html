@@ -11,8 +11,9 @@
         <div th:replace="~{fragments :: navbar}"></div>
         <!-- Main Content -->
         <main class=" mt-4 container-md">
-            <span th:text="${type}"></span>
 
+            <div th:replace="~{fragments :: toast-success}"/>
+            <div th:replace="~{fragments :: toast-error}"/>
             <div class="row align-items-center px-3">
                 <div class="col-md-2">
                     <a class="btn btn-primary w-100" th:href="@{/platforms/create}">Add new Platform</a>
@@ -47,7 +48,7 @@
                     </div>
                 </div>
             </section>
-
+            <div th:replace="~{fragments :: toast-script}"/>
         </main>
         <div th:replace="~{fragments :: footer}"></div>
     </div>

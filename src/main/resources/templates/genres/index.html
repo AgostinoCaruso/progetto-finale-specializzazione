@@ -44,14 +44,7 @@
 
     <!-- Script Bootstrap -->
     <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const toastElList = [].slice.call(document.querySelectorAll('.toast'));
-            toastElList.forEach(function (toastEl) {
-                new bootstrap.Toast(toastEl).show();
-            });
-        });
-    </script>
+    <div th:replace="~{fragments :: toast-script}"/>
 </body>
 
 </html>
