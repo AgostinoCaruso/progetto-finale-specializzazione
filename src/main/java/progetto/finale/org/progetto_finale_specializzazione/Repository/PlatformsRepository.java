@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import progetto.finale.org.progetto_finale_specializzazione.Model.Platform;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Platforms;
 
 
-public interface PlatformsRepository extends JpaRepository<Platform, Integer>{
+public interface PlatformsRepository extends JpaRepository<Platforms, Integer>{
 
-        public List<Platform> findByNameContainingIgnoreCase (String search);
+        public List<Platforms> findAllByOrderByNameAsc();
+        public List<Platforms> findByNameContainingIgnoreCase (String search);
 }

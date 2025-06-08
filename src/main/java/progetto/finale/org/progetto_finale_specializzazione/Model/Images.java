@@ -21,7 +21,7 @@ public class Images {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "This camp cannot be null")
+    
     private String imagePath;
 
     @ManyToOne

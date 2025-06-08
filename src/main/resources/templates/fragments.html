@@ -43,10 +43,10 @@
                             <a class="nav-link" th:href="@{/games}">Games</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/genre}">Genre</a>
+                            <a class="nav-link" th:href="@{/genres}">Genre</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/platform}">Platform</a>
+                            <a class="nav-link" th:href="@{/platforms}">Platform</a>
                         </li>
                     </ul>
                 </div>
@@ -73,13 +73,16 @@
 
         <!-- /CARD-INDEX///////////////////// -->
 
-        <div th:fragment="card-index">
+        <div th:fragment="card-index(type)">
             <div class="card w-100 h-100 d-flex flex-column bg-light">
                 <!-- ANCORABILE: Tutta l'area cliccabile escluso il delete -->
                 <a th:href="@{/games/{id}(id=*{id})}" class="text-decoration-none text-reset flex-grow-1">
                     <div class="card-body fixed-height-card d-flex flex-column card-text">
                         <div>
-                            <h3 th:text="*{name}">Game Name</h3>
+                            <h3
+                                th:text="${game.name.length() > 15} ? ${game.name.substring(0, 15)} + '...' : ${game.name}">
+                                Game Name
+                            </h3>
                             <h5>
                                 <strong>Publisher:</strong>
                                 <em th:text="*{publisher}">Publisher Name</em>
@@ -87,6 +90,10 @@
                             <h5>
                                 <strong>Developer:</strong>
                                 <em th:text="*{developer}">Developer Name</em>
+                            </h5>
+                            <h5>
+                                <strong>Price:</strong>
+                                <em th:text="*{price}+'$'">Developer Name</em>
                             </h5>
                         </div>
                     </div>
@@ -101,7 +108,7 @@
                     <!-- SCORE -->
                     <div th:replace="~{fragments :: score-star(${game})}"></div>
 
-                    <div th:replace="~{fragments :: btn-update-delete}" />
+                    <div th:replace="~{fragments :: btn-update-delete-games-index}" />
 
                 </div>
             </div>
@@ -127,7 +134,7 @@
                             </div>
                             <div class="d-flex flex-column justify-content-around ">
                                 <div th:replace="~{fragments :: score-star(${game})}"></div>
-                                <div th:replace="~{fragments :: btn-update-delete}" />
+                                <div th:replace="~{fragments :: btn-update-delete-games-show}" />
                             </div>
                         </div>
 
@@ -170,11 +177,45 @@
                 </div>
 
 
-                <div class="d-flex align-items-start w-100 mt-5">
+                <div class="d-flex flex-column align-items-start w-100 mt-5">
                     <h3>
                         <strong>Description: </strong>
                         <em th:text="*{description}">Publisher Name</em>
                     </h3>
+                    <div class="my-3">
+                        <div th:if="${game.genres.size() > 0}">
+                            <h2 th:text="'Genres for this game:'"></h2>
+                        </div>
+                        <div th:unless="${game.genres.size() > 0}">
+                            <h2 th:text="'There are no generes for this game:'"></h2>
+                        </div>
+                        <ul class="d-flex gap-2 list-unstyled">
+                            <li th:each="genre, iterStat : *{genres}">
+                                <em class=" fs-5" th:text="${genre.name}"></em>
+                                <span th:if="!${iterStat.last}">, </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="my-3">
+                        <div th:if="${game.platforms.size() > 0}">
+                            <h2>Platforms for this game:</h2>
+                        </div>
+                        <div th:unless="${game.platforms.size() > 0}">
+                            <h2>There are no platforms for this game</h2>
+                        </div>
+                        <div class="row">
+                            <div th:each="platform : *{platforms}" class="col-3 mb-3">
+                                <div class="img overflow-hidden text-center card-img">
+                                    <img th:src="${platform.logoUrl}" th:alt="${platform.name}"
+                                        class="img-fluid w-100 h-100 object-fit-cover rounded px-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
@@ -222,8 +263,8 @@
             </footer>
 
         </div>
-        <!-- /UPDATE DELETE BUTTON -->
-        <div th:fragment="btn-update-delete">
+        <!-- /UPDATE DELETE BUTTON-GAMES***INDEX*** -->
+        <div th:fragment="btn-update-delete-games-index">
             <div class="d-flex align-self-start gap-1">
                 <!-- UPDATE -->
                 <div sec:authorize="hasAuthority('ADMIN')">
@@ -257,8 +298,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
-                                    <form class="d-inline-block" th:action="@{/games/delete/{id}(id=${game.id})}"
-                                        method="post">
+                                    <form th:action="@{/games/delete/{id}(id=*{id})}" method="post">
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
                                 </div>
@@ -269,6 +309,148 @@
                 </div>
             </div>
         </div>
+
+        <!-- /UPDATE DELETE BUTTON-GAMES-***SHOW*** -->
+        <div th:fragment="btn-update-delete-games-show">
+            <div class="d-flex align-self-start gap-1">
+                <!-- UPDATE -->
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/games/edit/{id}(id=*{id})}" class="btn btn-warning">Update</a>
+                </div>
+
+                <!-- DELETE BUTTON + MODALE -->
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <!-- Bottone visibile per aprire la modale -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#delete-modal-' + *{id}">
+                        Delete
+                    </button>
+
+                    <!-- MODALE -->
+                    <div class="modal fade" th:id="'delete-modal-' + *{id}" tabindex="-1" aria-labelledby="delete-modal"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                        Deleting [[*{name}]]
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you wanna delete:
+                                    <strong>[[*{name}]]</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <form th:action="@{/games/delete/{id}(id=*{id})}" method="post">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fine modale -->
+                </div>
+            </div>
+        </div>
+
+        <!-- /UPDATE DELETE BUTTON-GENRES -->
+        <div th:fragment="btn-update-delete-genres">
+            <div class="d-flex align-self-start gap-1">
+                <!-- UPDATE -->
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/genres/edit/{id}(id=*{id})}" class="btn btn-warning">Update</a>
+                </div>
+
+                <!-- DELETE BUTTON + MODALE -->
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <!-- Bottone visibile per aprire la modale -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#delete-modal-' + *{id}">
+                        Delete
+                    </button>
+
+                    <!-- MODALE -->
+                    <div class="modal fade" th:id="'delete-modal-' + *{id}" tabindex="-1" aria-labelledby="delete-modal"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                        Deleting [[*{name}]]
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you wanna delete:
+                                    <strong>[[*{name}]]</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <form th:action="@{/genres/delete/{id}(id=*{id})}" method="post">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fine modale -->
+                </div>
+            </div>
+        </div>
+
+        <!-- /UPDATE DELETE BUTTON-PLATFORMS -->
+        <div th:fragment="btn-update-delete-platforms">
+            <div class="d-flex align-self-start gap-1">
+                <!-- UPDATE -->
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/platforms/edit/{id}(id=*{id})}" class="btn btn-warning">Update</a>
+                </div>
+
+                <!-- DELETE BUTTON + MODALE -->
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <!-- Bottone visibile per aprire la modale -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#delete-modal-' + *{id}">
+                        Delete
+                    </button>
+
+                    <!-- MODALE -->
+                    <div class="modal fade" th:id="'delete-modal-' + *{id}" tabindex="-1" aria-labelledby="delete-modal"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                        Deleting [[*{name}]]
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you wanna delete:
+                                    <strong>[[*{name}]]</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <form th:action="@{/platforms/delete/{id}(id=*{id})}" method="post">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fine modale -->
+                </div>
+            </div>
+        </div>
+
 
         <!-- / SEARCH BAR-GAMES/////////////////////// -->
         <div th:fragment="search(type)">
@@ -281,7 +463,32 @@
                     </div>
                 </form>
             </div>
+        </div>
 
+        <div th:fragment="toast-success">
+            <div th:if="${successMessage}" class="toast-container position-fixed top-0 start-0 p-3"
+                style="z-index: 9999">
+                <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body" th:text="${successMessage}"></div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:fragment="toast-error">
+            <div th:if="${errorMessage}" class="toast-container position-fixed top-5 end-0 p-3" style="z-index: 9999">
+                <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body" th:text="${errorMessage}"></div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>

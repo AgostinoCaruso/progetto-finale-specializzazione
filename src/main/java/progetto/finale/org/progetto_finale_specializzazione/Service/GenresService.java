@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import progetto.finale.org.progetto_finale_specializzazione.Model.Genre;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Platforms;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.GenresRepository;
 
 @Service
@@ -14,26 +15,30 @@ public class GenresService {
     @Autowired
     private GenresRepository genresRepository;
 
-    public List<Genre> findAll() {
+    public List<Genres> findAll() {
 
         return genresRepository.findAll();
     }
 
-    public List<Genre> findByName(String search) {
+    public List<Genres> findAllByNameAsc() {
+        return genresRepository.findAllByOrderByNameAsc();
+    }
+
+    public List<Genres> findByName(String search) {
         return genresRepository.findByNameContainingIgnoreCase(search);
     }
 
-    public Genre getById(Integer id) {
+    public Genres getById(Integer id) {
 
         return genresRepository.findById(id).get();
     }
 
-    public Genre create(Genre game) {
+    public Genres create(Genres game) {
 
         return genresRepository.save(game);
     }
 
-    public Genre update(Genre game) {
+    public Genres update(Genres game) {
 
         return genresRepository.save(game);
     }

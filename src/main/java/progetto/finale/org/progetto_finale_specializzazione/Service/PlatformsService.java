@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import progetto.finale.org.progetto_finale_specializzazione.Model.Platform;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Platforms;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.PlatformsRepository;
 
 @Service
@@ -14,26 +14,30 @@ public class PlatformsService {
     @Autowired
     private PlatformsRepository platformsRepository;
 
-    public List<Platform> findAll() {
+    public List<Platforms> findAll() {
 
         return platformsRepository.findAll();
     }
 
-    public List<Platform> findByName(String search) {
+    public List<Platforms> findAllByNameAsc(){
+        return platformsRepository.findAllByOrderByNameAsc();
+    }
+
+    public List<Platforms> findByName(String search) {
         return platformsRepository.findByNameContainingIgnoreCase(search);
     }
 
-    public Platform getById(Integer id) {
+    public Platforms getById(Integer id) {
 
         return platformsRepository.findById(id).get();
     }
 
-    public Platform create(Platform game) {
+    public Platforms create(Platforms game) {
 
         return platformsRepository.save(game);
     }
 
-    public Platform update(Platform game) {
+    public Platforms update(Platforms game) {
 
         return platformsRepository.save(game);
     }

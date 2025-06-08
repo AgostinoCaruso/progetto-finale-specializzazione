@@ -1,17 +1,20 @@
 package progetto.finale.org.progetto_finale_specializzazione.Model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="platforms")
-public class Platform {
+public class Platforms {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +26,9 @@ public class Platform {
     @NotBlank(message = "This camp cannot be null or blank")
     public String logoUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Games game;
+    @ManyToMany(mappedBy = "platforms")
+    @JsonBackReference
+    private List<Games> games;
 
     public String getLogoUrl() {
         return this.logoUrl;
@@ -35,14 +38,13 @@ public class Platform {
         this.logoUrl = logoUrl;
     }
 
-    public Games getGame() {
-        return this.game;
+    public List<Games> getGames() {
+        return this.games;
     }
 
-    public void setGame(Games game) {
-        this.game = game;
+    public void setGames(List<Games> games) {
+        this.games = games;
     }
-
     public Integer getId() {
         return this.id;
     }
@@ -57,14 +59,5 @@ public class Platform {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImage() {
-        return this.logoUrl;
-    }
-
-    public void setImage(String logoUrl) {
-        this.logoUrl = logoUrl;
-    }
-
+    }    
 }

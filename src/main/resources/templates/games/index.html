@@ -15,16 +15,14 @@
                 <div class="col-md-2">
                     <a class="btn btn-primary w-100" th:href="@{/games/create}">Add new Game</a>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-6 ms-auto">
                     <div th:replace="~{fragments :: search('games')}" />
                 </div>
             </div>
 
             <section class="row">
                 <div th:each="game : ${games}" th:object="${game}" class="d-flex col-3 mb-2 mt-2">
-
-                    <!-- card-index-fragments -->
-                    <div th:replace="~{fragments :: card-index}" />
+                    <div th:replace="~{fragments :: card-index(type='games')}" />
                 </div>
             </section>
         </main>

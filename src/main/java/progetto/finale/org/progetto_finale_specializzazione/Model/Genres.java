@@ -1,17 +1,20 @@
 package progetto.finale.org.progetto_finale_specializzazione.Model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "genres")
-public class Genre {
+public class Genres {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +23,10 @@ public class Genre {
     @NotBlank()
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Games game;
-    
+    @ManyToMany(mappedBy = "genres")
+    @JsonBackReference
+    private List<Games> games;
+
     public Integer getId() {
         return this.id;
     }
@@ -40,13 +43,12 @@ public class Genre {
         this.name = name;
     }
 
-    public Games getGame() {
-        return this.game;
+    public List<Games> getGames() {
+        return this.games;
     }
 
-    public void setGame(Games game) {
-        this.game = game;
+    public void setGames(List<Games> games) {
+        this.games = games;
     }
-
 
 }

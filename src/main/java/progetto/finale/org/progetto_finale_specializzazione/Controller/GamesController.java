@@ -18,6 +18,8 @@ import jakarta.validation.Valid;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Images;
 import progetto.finale.org.progetto_finale_specializzazione.Service.GamesService;
+import progetto.finale.org.progetto_finale_specializzazione.Service.GenresService;
+import progetto.finale.org.progetto_finale_specializzazione.Service.PlatformsService;
 
 @Controller
 @RequestMapping("/games")
@@ -25,6 +27,12 @@ public class GamesController {
 
     @Autowired
     private GamesService gamesService;
+
+    @Autowired
+    private PlatformsService platformsService;
+
+    @Autowired
+    private GenresService genresService;
 
     @GetMapping
     public String index(@RequestParam(name = "search", required = false) String search, Model model,
@@ -57,7 +65,10 @@ public class GamesController {
 
         Games game = new Games();
         game.getImages().add(new Images());
+        
         model.addAttribute("game", game);
+        model.addAttribute("platforms", platformsService.findAll());
+        model.addAttribute("genres", genresService.findAll());
         model.addAttribute("edit", false);
         return "games/create-edit";
     }
@@ -71,6 +82,9 @@ public class GamesController {
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("platforms", platformsService.findAll());
+            model.addAttribute("genres", genresService.findAll());
+            model.addAttribute("edit", false);
             return "games/create-edit";
         }
 
@@ -82,6 +96,8 @@ public class GamesController {
     public String edit(@PathVariable Integer id, Model model) {
 
         model.addAttribute("game", gamesService.getById(id));
+        model.addAttribute("platforms", platformsService.findAll());
+        model.addAttribute("genres", genresService.findAll());
         model.addAttribute("edit", true);
         return "games/create-edit";
     }
@@ -94,6 +110,8 @@ public class GamesController {
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("platforms", platformsService.findAll());
+            model.addAttribute("genres", genresService.findAll());
             model.addAttribute("edit", true);
             return "games/create-edit";
         }

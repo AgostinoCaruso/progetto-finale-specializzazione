@@ -1,5 +1,6 @@
 package progetto.finale.org.progetto_finale_specializzazione.Model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +12,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +39,10 @@ public class Games {
     @NotBlank(message = "This camp cannot be null, blank")
     private String name;
 
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be higher than zero")
+    @NotNull(message = "This camp cannot be null")
+    private BigDecimal price;
+
     @Min(1)
     @Max(10)
     @NotNull(message = "This camp cannot be null or blank")
@@ -46,18 +55,20 @@ public class Games {
     private String developer;
 
     @Lob
-    @Column(length=500)
+    @Column(length = 500)
     @NotBlank(message = "This camp cannot be null or blank")
     private String description;
 
     // qua collego ad un gioco uno o piu generi
-    @OneToMany(mappedBy = "game")
+    @ManyToMany
     @JsonManagedReference
-    private List<Genre> genres = new ArrayList<>();
+    @JoinTable(name = "game_genre", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genres> genres = new ArrayList<>();
 
-    @OneToMany(mappedBy = "game")
+    @ManyToMany
     @JsonManagedReference
-    private List<Platform> platforms = new ArrayList<>();
+    @JoinTable(name = "game_platform", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "platform_id"))
+    private List<Platforms> platforms = new ArrayList<>();
 
     // qua collego ad un gioco una o piu immagini
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
@@ -66,6 +77,22 @@ public class Games {
 
     public Integer getId() {
         return this.id;
+    }
+
+    public List<Genres> getGenres() {
+        return this.genres;
+    }
+
+    public BigDecimal getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setGenres(List<Genres> genres) {
+        this.genres = genres;
     }
 
     public void setId(Integer id) {
@@ -120,19 +147,11 @@ public class Games {
         this.developer = developer;
     }
 
-    public List<Genre> getGenre() {
-        return this.genres;
-    }
-
-    public void setGenre(List<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public List<Platform> getPlatforms() {
+    public List<Platforms> getPlatforms() {
         return this.platforms;
     }
 
-    public void setPlatforms(List<Platform> platforms) {
+    public void setPlatforms(List<Platforms> platforms) {
         this.platforms = platforms;
     }
 
