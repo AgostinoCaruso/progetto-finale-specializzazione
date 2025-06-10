@@ -1,0 +1,1 @@
+INSERT INTO games (name, score) VALUES ('The Legend of Zelda', 10), ('Minecraft', 9), ('Cyberpunk 2077', 7), ('Super Mario Bros', 8), ('Among Us', 6), ('Elden Ring', 10), ('FIFA 23', 5), ('Genshin Impact', 7), ('Hades', 9), ('League of Legends', 6);
