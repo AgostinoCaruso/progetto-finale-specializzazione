@@ -1,6 +1,7 @@
 package progetto.finale.org.progetto_finale_specializzazione.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class PlatformsService {
         return platformsRepository.findAll();
     }
 
+    public Optional<Platforms> findById(Integer id){
+        return platformsRepository.findById(id);
+    }
     public List<Platforms> findAllByNameAsc(){
         return platformsRepository.findAllByOrderByNameAsc();
     }

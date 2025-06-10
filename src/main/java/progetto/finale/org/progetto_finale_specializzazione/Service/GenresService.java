@@ -1,12 +1,12 @@
 package progetto.finale.org.progetto_finale_specializzazione.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
-import progetto.finale.org.progetto_finale_specializzazione.Model.Platforms;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.GenresRepository;
 
 @Service
@@ -18,6 +18,10 @@ public class GenresService {
     public List<Genres> findAll() {
 
         return genresRepository.findAll();
+    }
+
+    public Optional<Genres> findById(Integer id){
+        return genresRepository.findById(id);
     }
 
     public List<Genres> findAllByNameAsc() {
