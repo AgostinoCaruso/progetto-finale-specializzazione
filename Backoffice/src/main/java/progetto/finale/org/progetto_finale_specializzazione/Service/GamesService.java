@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.GamesRepository;
@@ -16,17 +18,16 @@ public class GamesService {
     @Autowired
     private GamesRepository gamesRepository;
 
-    public List<Games> findAll() {
-
-        return gamesRepository.findAll();
+    public Page<Games> findAll(Pageable pageable) {
+        return gamesRepository.findAll(pageable);
     }
 
-    public Optional<Games> findById(Integer id){
+    public Page<Games> findByName(String search, Pageable pageable) {
+        return gamesRepository.findByNameContainingIgnoreCase(search, pageable);
+    }
+
+    public Optional<Games> findById(Integer id) {
         return gamesRepository.findById(id);
-    }
-
-    public List<Games> findByName(String search){
-        return gamesRepository.findByNameContainingIgnoreCase(search);
     }
 
     public Games getById(Integer id) {
@@ -48,7 +49,7 @@ public class GamesService {
         gamesRepository.deleteById(id);
     }
 
-    public List<Games> findByGenreOrderByNameAsc(Genres genres){
+    public List<Games> findByGenreOrderByNameAsc(Genres genres) {
         return gamesRepository.findByGenresOrderByNameAsc(genres);
     }
 }

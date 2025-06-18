@@ -97,9 +97,12 @@
                             </h5>
                         </div>
                     </div>
-                    <div class="img overflow-hidden text-center flex-grow-1 mb-2 card-img">
-                        <img th:src="${game.images[0].imagePath}" alt=""
-                            class="img-fluid w-100 h-100 object-fit-cover rounded px-1">
+                    <div th:if="${game.images != null and #lists.size(game.images) > 0}">
+
+                        <div class="img overflow-hidden text-center flex-grow-1 mb-2 card-img">
+                            <img th:src="@{'/uploads/' + ${game.images[0].imagePath}}" alt=""
+                                class="img-fluid w-100 h-100 object-fit-cover rounded px-1">
+                        </div>
                     </div>
                 </a>
 
@@ -154,12 +157,15 @@
                                     th:aria-label="'Slide ' + (${stat.index} + 1)">
                                 </button>
                             </div>
+                            <div th:if="${game.images != null and #lists.size(game.images) > 0}">
 
-                            <!-- Slide immagini -->
-                            <div class="carousel-inner">
-                                <div th:each="img, stat : *{images}"
-                                    th:class="'carousel-item ' + (${stat.index == 0} ? 'active' : '')">
-                                    <img th:src="${img.imagePath}" class="d-block w-100" alt="Game Image" />
+                                <!-- Slide immagini -->
+                                <div class="carousel-inner">
+                                    <div th:each="img, stat : *{images}"
+                                        th:class="'carousel-item ' + (${stat.index == 0} ? 'active' : '')">
+                                        <img th:src="@{'/uploads/' + ${img.imagePath}}" class="d-block w-100"
+                                            alt="Game Image" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -220,6 +226,51 @@
                 </div>
             </div>
         </div>
+
+        <div th:fragment="pagination">
+            <nav aria-label="Page navigation example" class="my-5">
+                <ul class="pagination justify-content-center">
+
+                    <li class="page-item" th:classappend="${gamesPage.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/games(page=${currentPage - 1})}">Previous</a>
+                    </li>
+
+                    <!-- Prima pagina sempre visibile -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'active'">
+                        <a class="page-link" th:href="@{/games(page=0)}">1</a>
+                    </li>
+
+                    <!-- Puntini prima del gruppo centrale -->
+                    <li class="page-item disabled" th:if="${currentPage > 3}">
+                        <span class="page-link">...</span>
+                    </li>
+
+                    <!-- Pagine vicine a quella corrente -->
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(T(java.lang.Math).max(1, currentPage - 2), T(java.lang.Math).min(gamesPage.totalPages - 2, currentPage + 2))}"
+                        th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/games(page=${i})}" th:text="${i + 1}">2</a>
+                    </li>
+
+                    <!-- Puntini dopo il gruppo centrale -->
+                    <li class="page-item disabled" th:if="${currentPage < gamesPage.totalPages - 4}">
+                        <span class="page-link">...</span>
+                    </li>
+
+                    <!-- Ultima pagina sempre visibile -->
+                    <li class="page-item" th:classappend="${currentPage == gamesPage.totalPages - 1} ? 'active'">
+                        <a class="page-link" th:href="@{/games(page=${gamesPage.totalPages - 1})}"
+                            th:text="${gamesPage.totalPages}">Last</a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${gamesPage.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/games(page=${currentPage + 1})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+
         <!-- /FOOTER///////////////////////////// -->
 
         <div th:fragment="footer">

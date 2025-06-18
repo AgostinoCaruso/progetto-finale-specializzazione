@@ -1,107 +1,75 @@
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+    const [query, setQuery] = useState("");
+    const navigate = useNavigate();
 
-    const [isOpen, setIsOpen] = useState(false);
-    const handleToggle = () => {
-        setIsOpen(!isOpen);
-        window.scrollTo(
-            {
-                top: 0,
-                behavior: "instant"
-            }
-        )
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        if (query.trim() === '') {
+            navigate('/games');
+        } else {
+            navigate(`/games/search?q=${encodeURIComponent(query.trim())}`);
+            setQuery("");
+        }
     };
 
-    function handleMenu() {
-        setIsOpen(!isOpen);
-    }
+    const logo = "/logo.png";
 
     return (
-        <>
-        <div className="w-100 text-uppercase" id="id-navbar">
-            <nav className="container-fluid navbar navbar-expand-lg d-navbar-dark h-100 p-0">
-                <div className="w-100 g-0">
+        <div className="navbar-mine bg-white shadow-sm">
+            <nav className="navbar navbar-expand-lg">
+                <div className="container">
+                    {/* Logo */}
+                    <NavLink to="/" className="navbar-brand d-flex align-items-center">
+                        <img src={logo} alt="Logo" width="100%" height="50px" className="me-2" />
+                        <span className="fw-bold text-dark"></span>
+                    </NavLink>
+
+                    {/* Toggle per mobile */}
                     <button
-                        className="navbar-toggler mx-3"
+                        className="navbar-toggler"
                         type="button"
-                        aria-expanded={isOpen}
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarContent"
+                        aria-controls="navbarContent"
+                        aria-expanded="false"
                         aria-label="Toggle navigation"
-                        onClick={handleMenu}
                     >
-                        <span className="navbar-toggler-icon" style={{ backgroudColor: 'red' }}></span>
+                        <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div
-                        className={`w-100 collapse navbar-collapse my-2  ${isOpen ? "show" : ""}`}
-                        id="navbarSupportedContent"
-                    >
-                        <ul className="navbar-nav mb-2 mb-lg-0 fw-bold text-shadow-1 align-items-center">
 
-                            <li className="nav-item">
-                                <NavLink to="/" className="nav-link text-decoration-none navlink-hover custom-link" onClick={handleToggle}>
-                                    <img style={{ width: "40px", height: "40px" }} src="/img/logoMenu.png" alt="Logo" className="logo" />
-                                </NavLink>
-                            </li>
-
+                    {/* Menu e search */}
+                    <div className="collapse navbar-collapse" id="navbarContent">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 <NavLink
-                                    to="/"
-                                    className="nav-link text-decoration-none navlink-hover custom-link"
-                                    style={({ isActive }) => (isActive ? { color: "#8B2635" } : { color: "white" })}
-                                    onClick={handleToggle}
-                                    end
+                                    to="/games"
+                                    className={({ isActive }) =>
+                                        "nav-link fw-bold " + (isActive ? "text-danger" : "text-dark")
+                                    }
                                 >
-                                    Homepage
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink
-                                    to="/advanced-research"
-                                    className="nav-link text-decoration-none navlink-hover custom-link"
-                                    style={({ isActive }) => (isActive ? { color: "#8B2635" } : { color: "white" })}
-                                    onClick={handleToggle}
-                                    end
-                                >
-                                    Search an apartment
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink
-                                    to="/post-apartment"
-                                    className="nav-link text-decoration-none navlink-hover custom-link"
-                                    style={({ isActive }) => (isActive ? { color: "#8B2635" } : { color: "white" })}
-                                    onClick={handleToggle}
-                                    end
-                                >
-                                    Post your announcement
+                                    Games
                                 </NavLink>
                             </li>
                         </ul>
+
+                        {/* Search form */}
+                        <form className="d-flex" onSubmit={handleSearchSubmit}>
+                            <input
+                                type="search"
+                                className="form-control me-2"
+                                placeholder="Search games..."
+                                aria-label="Search"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                            />
+                            <button className="btn btn-outline-secondary" type="submit">Search</button>
+                        </form>
                     </div>
                 </div>
             </nav>
         </div>
-        
-            <nav class="navbar navbar-expand-lg">
-                <div class="container">
-                    <a class="navbar-brand" href="#">GameStore</a>
-                    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="menu">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item"><a class="nav-link" href="#">Giochi</a></li>
-                            <li className="nav-item">
-                                <NavLink to="/" className="nav-link text-decoration-none navlink-hover custom-link" onClick={handleToggle}>
-                                    <img style={{ width: "40px", height: "40px" }} src="/img/logoMenu.png" alt="Logo" className="logo" />
-                                </NavLink>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="#">Console</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Accessori</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Offerte</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </>
-    )
+    );
 }

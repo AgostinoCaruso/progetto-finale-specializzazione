@@ -16,13 +16,6 @@
   overflow: hidden;
 }
 
-/* .fixed-height-card {
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-} */
 
 .fixed-height-card-show {
   width: 800px;

@@ -24,17 +24,19 @@
             </div>
 
             <section class="row">
-                <div th:each="game : ${games}" th:object="${game}" class="d-flex col-3 mb-2 mt-2">
+                <div th:each="game : ${gamesPage.content}" th:object="${game}" class="d-flex col-3 mb-2 mt-2">
                     <div th:replace="~{fragments :: card-index(type='games')}" />
                 </div>
             </section>
+            
+            <div th:replace="~{fragments :: pagination}"/>
         </main>
         <div th:replace="~{fragments :: footer}"></div>
     </div>
 
     <!-- Script Bootstrap -->
     <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
-    <div th:replace="~{fragments :: toast-script}"/>
+    <div th:replace="~{fragments :: toast-script}" />
 </body>
 
 </html>

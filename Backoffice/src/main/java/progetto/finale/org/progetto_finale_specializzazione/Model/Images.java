@@ -19,22 +19,22 @@ public class Images {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     
     private String imagePath;
 
     @ManyToOne
-    @JoinColumn(name = "game_id")
+    @JoinColumn(name = "game_id", nullable = false)
     @JsonBackReference
     private Games game;
 
 
-    public Long getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

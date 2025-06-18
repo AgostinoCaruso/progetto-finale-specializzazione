@@ -19,7 +19,12 @@ import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
 import progetto.finale.org.progetto_finale_specializzazione.Service.GamesService;
 import progetto.finale.org.progetto_finale_specializzazione.Service.GenresService;
 import progetto.finale.org.progetto_finale_specializzazione.Service.PlatformsService;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/games")
 public class GamesRestController {
@@ -34,8 +39,14 @@ public class GamesRestController {
     private GenresService genresService;
 
     @GetMapping
-    public List<Games> index() {
-        return gamesService.findAll();
+    public Page<Games> index(Pageable pageable) {
+        return gamesService.findAll(pageable);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Games>> searchGames(@RequestParam("q") String query, Pageable pageable) {
+        Page<Games> results = gamesService.findByName(query, pageable);
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

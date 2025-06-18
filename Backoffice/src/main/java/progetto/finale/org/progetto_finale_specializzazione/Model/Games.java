@@ -24,7 +24,15 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.time.LocalDateTime;
+
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "games")
 public class Games {
 
@@ -54,6 +62,13 @@ public class Games {
     @NotBlank(message = "This camp cannot be null or blank")
     private String developer;
 
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
+
     @Lob
     @Column(length = 500)
     @NotBlank(message = "This camp cannot be null or blank")
@@ -71,7 +86,7 @@ public class Games {
     private List<Platforms> platforms = new ArrayList<>();
 
     // qua collego ad un gioco una o piu immagini
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Images> images = new ArrayList<>();
 
@@ -153,6 +168,22 @@ public class Games {
 
     public void setPlatforms(List<Platforms> platforms) {
         this.platforms = platforms;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return this.createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return this.lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
 }
