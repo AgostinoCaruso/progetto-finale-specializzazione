@@ -67,7 +67,7 @@ export default function HomePage() {
                             <Carousel.Item key={index}>
                                 <Row className="g-1 bord-carousel">
                                     {group.map(console => (
-                                        <Col md={3} key={console.id} className="d-flex justify-content-center">
+                                        <Col md={3} key={console.id} className="d-flex justify-content-center align-items-center">
                                             <Link to={`/platforms/${console.id}`}>
                                                 <img
                                                     className="img-fluid rounded shadow hover-raise"
