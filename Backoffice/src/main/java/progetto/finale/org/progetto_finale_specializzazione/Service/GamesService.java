@@ -26,6 +26,10 @@ public class GamesService {
         return gamesRepository.findByNameContainingIgnoreCase(search, pageable);
     }
 
+    public List<Games> findRecomandation(List<Genres> genres, Integer id){
+        return gamesRepository.findTop8ByGenresInAndIdNot(genres, id);
+    }
+
     public Optional<Games> findById(Integer id) {
         return gamesRepository.findById(id);
     }

@@ -12,8 +12,7 @@
     <div th:fragment="head">
         <meta charset="UTF-8">
         <title>GamesSpot</title>
-        <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}
-    " />
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
         <link rel="stylesheet" th:href="@{/style.css}">
     </div>
@@ -215,13 +214,14 @@
                             <h2>There are no platforms for this game</h2>
                         </div>
                         <div class="row">
-                            <div th:each="platform : *{platforms}" class="col-3 mb-3">
-                                <div class="img overflow-hidden text-center card-img">
+                            <div th:each="platform : *{platforms}" class="col-3 mb-3 d-flex justify-content-center">
+                                <div style="width: 150px; height: 100px; overflow: hidden;">
                                     <img th:src="${platform.logoUrl}" th:alt="${platform.name}"
-                                        class="img-fluid w-100 h-100 object-fit-cover rounded px-1">
+                                        style="width: 100%; height: 100%; object-fit: cover;" class="rounded">
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -231,7 +231,8 @@
             <nav aria-label="Page navigation example" class="my-5">
                 <ul class="pagination justify-content-center">
 
-                    <li class="page-item" th:classappend="${gamesPage.first} ? 'disabled'">
+                    <!-- Previous -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                         <a class="page-link" th:href="@{/games(page=${currentPage - 1})}">Previous</a>
                     </li>
 
@@ -245,10 +246,11 @@
                         <span class="page-link">...</span>
                     </li>
 
-                    <!-- Pagine vicine a quella corrente -->
-                    <li class="page-item"
-                        th:each="i : ${#numbers.sequence(T(java.lang.Math).max(1, currentPage - 2), T(java.lang.Math).min(gamesPage.totalPages - 2, currentPage + 2))}"
-                        th:classappend="${i == currentPage} ? 'active'">
+                    <!-- Pagine centrali -->
+                    <li class="page-item" th:each="i : ${#numbers.sequence(
+                    T(java.lang.Math).max(1, currentPage - 2),
+                    T(java.lang.Math).min(gamesPage.totalPages - 2, currentPage + 2)
+                )}" th:if="${i > 0 and i < gamesPage.totalPages - 1}" th:classappend="${i == currentPage} ? 'active'">
                         <a class="page-link" th:href="@{/games(page=${i})}" th:text="${i + 1}">2</a>
                     </li>
 
@@ -258,14 +260,17 @@
                     </li>
 
                     <!-- Ultima pagina sempre visibile -->
-                    <li class="page-item" th:classappend="${currentPage == gamesPage.totalPages - 1} ? 'active'">
+                    <li class="page-item" th:if="${gamesPage.totalPages > 1}"
+                        th:classappend="${currentPage == gamesPage.totalPages - 1} ? 'active'">
                         <a class="page-link" th:href="@{/games(page=${gamesPage.totalPages - 1})}"
                             th:text="${gamesPage.totalPages}">Last</a>
                     </li>
 
-                    <li class="page-item" th:classappend="${gamesPage.last} ? 'disabled'">
+                    <!-- Next -->
+                    <li class="page-item" th:classappend="${currentPage == gamesPage.totalPages - 1} ? 'disabled'">
                         <a class="page-link" th:href="@{/games(page=${currentPage + 1})}">Next</a>
                     </li>
+
                 </ul>
             </nav>
         </div>
@@ -274,47 +279,50 @@
         <!-- /FOOTER///////////////////////////// -->
 
         <div th:fragment="footer">
-            <footer class="site-footer mt-5 bg-dark">
-                <div class="footer-container text-light">
-                    <div class="footer-section">
-                        <h4>Informazioni</h4>
-                        <ul>
-                            <li><a href="#">Chi siamo</a></li>
-                            <li><a href="#">Contatti</a></li>
-                            <li><a href="#">Lavora con noi</a></li>
-                        </ul>
+            <footer class="bg-dark text-light mt-5 py-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6 col-md-3 mb-3">
+                            <h4>Information</h4>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-light text-decoration-none">About Us</a></li>
+                                <li><a href="mailto:support@company.com" class="text-light text-decoration-none">IT
+                                        Support</a></li>
+                                <li><a href="#" class="text-light text-decoration-none">User Manual</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <h4>Support</h4>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-light text-decoration-none">FAQ</a></li>
+                                <li><a href="#" class="text-light text-decoration-none">Report Issue</a></li>
+                                <li><a href="#" class="text-light text-decoration-none">Release Notes</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <h4>Legal</h4>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-light text-decoration-none">Internal Privacy Policy</a></li>
+                                <li><a href="#" class="text-light text-decoration-none">Terms of Use</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <h4>Resources</h4>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-light text-decoration-none">Dashboard</a></li>
+                                <li><a href="#" class="text-light text-decoration-none">User Management</a></li>
+                                <li><a href="#" class="text-light text-decoration-none">Reports</a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="footer-section">
-                        <h4>Supporto</h4>
-                        <ul>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Assistenza clienti</a></li>
-                            <li><a href="#">Resi e rimborsi</a></li>
-                        </ul>
+
+                    <div class="text-center mt-3 border-top pt-3">
+                        <p class="mb-0">&copy; 2025 Company Name. All rights reserved.</p>
                     </div>
-                    <div class="footer-section">
-                        <h4>Legale</h4>
-                        <ul>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Termini di servizio</a></li>
-                            <li><a href="#">Cookie</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h4>Seguici</h4>
-                        <ul class="social-links">
-                            <li><a href="#">Facebook</a></li>
-                            <li><a href="#">Instagram</a></li>
-                            <li><a href="#">LinkedIn</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p>&copy; 2025 Il Tuo Sito. Tutti i diritti riservati.</p>
                 </div>
             </footer>
-
         </div>
+
         <!-- /UPDATE DELETE BUTTON-GAMES***INDEX*** -->
         <div th:fragment="btn-update-delete-games-index">
             <div class="d-flex align-self-start gap-1">

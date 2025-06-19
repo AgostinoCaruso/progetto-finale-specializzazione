@@ -15,7 +15,7 @@ export default function GamesPage() {
     const searchTerm = queryParams.get("q") || "";
     const pageParam = parseInt(queryParams.get("page")) || 0;
 
-    const PAGE_SIZE = 1;
+    const PAGE_SIZE = 12;
 
     useEffect(() => {
         if (searchTerm) {
@@ -24,25 +24,25 @@ export default function GamesPage() {
             fetchAllGames(pageParam);
         }
     }, [searchTerm, pageParam]);
-
+    
     const fetchAllGames = (page) => {
         axios.get(`http://localhost:8080/api/games?page=${page}&size=${PAGE_SIZE}`)
-            .then(res => {
-                setGames(res.data.content);
-                setTotalPages(res.data.totalPages);
-            })
-            .catch(err => console.error(err));
+        .then(res => {
+            setGames(res.data.content);
+            setTotalPages(res.data.totalPages);
+        })
+        .catch(err => console.error(err));
     };
-
+    
     const fetchGamesBySearch = (query, page) => {
         axios.get(`http://localhost:8080/api/games/search?q=${query}&page=${page}&size=${PAGE_SIZE}`)
-            .then(res => {
-                setGames(res.data.content);
-                setTotalPages(res.data.totalPages);
-            })
-            .catch(err => console.error(err));
+        .then(res => {
+            setGames(res.data.content);
+            setTotalPages(res.data.totalPages);
+        })
+        .catch(err => console.error(err));
     };
-
+    
     const changePage = (newPage) => {
         const params = new URLSearchParams(location.search);
         params.set("page", newPage);
@@ -63,8 +63,10 @@ export default function GamesPage() {
                 ))}
             </div>
 
-            {/* Paginazione */}
-                <Pagination pageParam={pageParam} changePage={changePage} totalPages={totalPages}/>
+            {games.length > 0
+                ? <Pagination pageParam={pageParam} changePage={changePage} totalPages={totalPages}/>
+                : <p></p>
+            }
         </div>
     );
 }

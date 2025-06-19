@@ -13,4 +13,7 @@ public interface GamesRepository extends JpaRepository<Games, Integer> {
         public Page<Games> findByNameContainingIgnoreCase(String search, Pageable pageable);
 
         public List<Games> findByGenresOrderByNameAsc(Genres genres);
+
+        public List<Games> findTop8ByGenresInAndIdNot(List<Genres> genres, Integer id);
+
 }

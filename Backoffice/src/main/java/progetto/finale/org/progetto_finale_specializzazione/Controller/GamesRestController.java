@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
 import progetto.finale.org.progetto_finale_specializzazione.Service.GamesService;
 import progetto.finale.org.progetto_finale_specializzazione.Service.GenresService;
 import progetto.finale.org.progetto_finale_specializzazione.Service.PlatformsService;
@@ -47,6 +48,20 @@ public class GamesRestController {
     public ResponseEntity<Page<Games>> searchGames(@RequestParam("q") String query, Pageable pageable) {
         Page<Games> results = gamesService.findByName(query, pageable);
         return new ResponseEntity<>(results, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/recommendations")
+    public ResponseEntity<List<Games>> getRecommendedGames(@PathVariable Integer id) {
+        Optional<Games> optionalGame = gamesService.findById(id);
+        if (optionalGame.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        Games currentGame = optionalGame.get();
+        List<Genres> genres = currentGame.getGenres();
+
+        // Recupera giochi che condividono almeno 1 genere, escludendo quello corrente
+        List<Games> recommended = gamesService.findRecomandation(genres, id);
+        return ResponseEntity.ok(recommended);
     }
 
     @GetMapping("/{id}")

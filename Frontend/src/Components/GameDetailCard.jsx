@@ -4,7 +4,7 @@ import Score from '../Components/Score';
 
 const imageUrl = `http://localhost:8080/images/`;
 
-export default function GameDetailCard({ game }) {
+export default function GameDetailCard({ game, recommendedGames }) {
     return (
         <>
             <Container className="my-5">
@@ -16,7 +16,7 @@ export default function GameDetailCard({ game }) {
                                 <Carousel.Item key={index}>
                                     <img
                                         className="d-block w-100 rounded"
-                                        src={`http://localhost:8080/images/${img.imagePath}` }
+                                        src={`http://localhost:8080/images/${img.imagePath}`}
                                         alt={`Image ${index + 1}`}
                                         style={{ maxHeight: '400px', objectFit: 'cover' }}
                                     />
@@ -28,7 +28,7 @@ export default function GameDetailCard({ game }) {
                     {/* Dati del gioco */}
                     <Col md={4}>
                         <h2>{game.name}</h2>
-                        <h4 className="text-success mb-3">${game.price}</h4>
+                        <h4 className="text-success mb-3">${game.price.toFixed(2)}</h4>
 
                         <div>
                             <strong>Score:</strong> <Score num={game.score} />
@@ -63,6 +63,35 @@ export default function GameDetailCard({ game }) {
                         <p className="lead">{game.description}</p>
                     </Col>
                 </Row>
+
+                {recommendedGames.length > 0 && (
+                    <>
+                        <h4>Recommended Games</h4>
+                        <Row>
+                            {recommendedGames.slice(0,8).map(g => (
+                                <Col key={g.id} md={3} className='my-3'>
+                                    <Link to={`/games/${g.id}`} className="text-decoration-none">
+                                        <div className="card mb-3 shadow-sm h-100 d-flex flex-column">
+                                            <img src={`http://localhost:8080/images/${g.images[0].imagePath}`} className="card-img-top" alt={g.name} />
+                                            <div className="card-body d-flex flex-column">
+                                                <h6 className="card-title">{g.name}</h6>
+                                                <div>
+                                                    {g.genres.slice(0, 3).map(genre => (
+                                                        <Badge key={genre.id} bg="secondary" className="me-1">{genre.name}</Badge>
+                                                    ))}
+                                                </div>
+                                                <div className="mt-auto"> {/* spinge il prezzo in basso */}
+                                                    <p className="card-text text-success">${g.price}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </Col>
+                            ))}
+                        </Row>
+                    </>
+                )}
+
             </Container>
         </>
     )

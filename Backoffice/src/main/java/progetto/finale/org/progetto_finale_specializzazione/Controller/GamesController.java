@@ -32,6 +32,7 @@ import progetto.finale.org.progetto_finale_specializzazione.Service.ImagesServic
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+
 @Controller
 @RequestMapping("/games")
 public class GamesController {
@@ -55,7 +56,7 @@ public class GamesController {
             Model model,
             Authentication authentication) {
 
-        int pageSize = 8;
+        int pageSize = 12;
         Page<Games> gamesPage;
 
         if (search != null && !search.isEmpty()) {
@@ -80,6 +81,11 @@ public class GamesController {
 
         return "games/show";
     }
+
+    // @GetMapping("/{id}/recommendations")
+    // public List<Games> getRecommendedGames(@PathVariable Integer id) {
+    //     return gamesService.findRecomandation(id);
+    // }
 
     @GetMapping("/create")
     public String create(Model model) {
