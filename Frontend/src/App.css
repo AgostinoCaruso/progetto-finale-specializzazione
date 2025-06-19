@@ -115,6 +115,15 @@ footer {
 
 }
 
+.hover-raise {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-raise:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
 .game-card {
   height: 100%;
   /* utile quando è in un grid o flex container */

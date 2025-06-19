@@ -6,18 +6,11 @@ import JumboCarousel from '../Components/JumboCarousel';
 import { Link } from 'react-router';
 
 export default function HomePage() {
-    const [games, setGames] = useState([]);
+    const [genres, setGenres] = useState([]);
     const [platforms, setPlatforms] = useState([]);
     const [topScore, setTopScore] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/games")
-            .then(res => {
-                //console.log(res.data.content);
-                setGames(res.data.content);
-            })
-            .catch(err => console.error(err));
-
         axios.get("http://localhost:8080/api/platforms")
             .then(res => {
                 //console.log("Fetched platforms:", res.data);
@@ -25,6 +18,12 @@ export default function HomePage() {
             })
             .catch(err => console.error(err));
 
+        axios.get("http://localhost:8080/api/genres")
+            .then(res => {
+                // console.log("Fetched genres:", res.data);
+                setGenres(res.data.content);
+            })
+            .catch(err => console.error(err));
         axios.get("http://localhost:8080/api/games/topscore")
             .then(res => {
                 // res.data.forEach((game, index) => {
@@ -37,6 +36,7 @@ export default function HomePage() {
 
 
     const platformChunks = chunkArray(platforms, 4);
+    const genresChunks = chunkArray(genres, 4);
 
     // Console immagini per il carosello (esempio statico)
 
@@ -61,7 +61,7 @@ export default function HomePage() {
                 </div>
 
                 <Container className="my-5">
-                    <h2 className="mb-3">Top Platforms to play</h2>
+                    <h2 className="mb-3">All Platforms</h2>
                     <Carousel>
                         {platformChunks.map((group, index) => (
                             <Carousel.Item key={index}>
@@ -70,7 +70,7 @@ export default function HomePage() {
                                         <Col md={3} key={console.id} className="d-flex justify-content-center">
                                             <Link to={`/platforms/${console.id}`}>
                                                 <img
-                                                    className="img-fluid rounded shadow"
+                                                    className="img-fluid rounded shadow hover-raise"
                                                     src={console.logoUrl}
                                                     alt={console.name}
                                                     style={{ maxHeight: '150px', objectFit: 'contain', backgroundColor: 'white', padding: '10px' }}
@@ -83,6 +83,32 @@ export default function HomePage() {
                         ))}
                     </Carousel>
                 </Container>
+
+
+                <Container className="my-5">
+                    <h2 className="mb-4 text-center">Genres</h2>
+                    <Carousel indicators={false}>
+                        {genresChunks.map((group, index) => (
+                            <Carousel.Item key={index}>
+                                <Row className="g-5 justify-content-center mb-5" style={{margin: '0px 200px'}}>
+                                    {group.map(genre => (
+                                        <Col key={genre.id} md={3}>
+                                            <Link to={`/genres/${genre.id}`} className="text-decoration-none text-dark">
+                                                <div className="card shadow-sm h-100 text-center hover-card py-3 px-0 hover-raise">
+                                                    <div className="card-body d-flex flex-column justify-content-center">
+                                                        <h5 className="card-title">{genre.name}</h5>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </Col>
+                                    ))}
+                                </Row>
+                            </Carousel.Item>
+                        ))}
+                    </Carousel>
+                </Container>
+
+
             </div>
         </>
     );

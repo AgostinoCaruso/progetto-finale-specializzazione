@@ -65,6 +65,16 @@ export default function Navbar() {
                             </li>
                             <li className="nav-item">
                                 <NavLink
+                                    to="/platforms"
+                                    className={({ isActive }) =>
+                                        "nav-link fw-bold " + (isActive ? "text-danger" : "text-dark")
+                                    }
+                                >
+                                    Platforms
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink
                                     to="/aboutus"
                                     className={({ isActive }) =>
                                         "nav-link fw-bold " + (isActive ? "text-danger" : "text-dark")

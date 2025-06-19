@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
-
+import progetto.finale.org.progetto_finale_specializzazione.Model.Platforms;
 public interface GamesRepository extends JpaRepository<Games, Integer> {
 
         public Page<Games> findByNameContainingIgnoreCase(String search, Pageable pageable);
@@ -21,5 +21,7 @@ public interface GamesRepository extends JpaRepository<Games, Integer> {
         public List<Games> findTop3ByOrderByScoreDesc();
 
         public List<Games> findTop8ByGenresOrderByScoreDesc(Genres genre);
+
+        public List<Games> findTop8ByPlatformsOrderByScoreDesc(Platforms platform);
 
 }

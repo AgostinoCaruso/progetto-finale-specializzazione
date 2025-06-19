@@ -48,7 +48,7 @@ export default function GenresPage() {
                     <div 
                         key={genre.id} 
                         style={{ flex: '1 1 250px', maxWidth: '300px', cursor: 'pointer' }} 
-                        className="card p-3"
+                        className="card p-3 game-card"
                         onClick={() => goToGenre(genre.id)}
                     >
                         <h5 className="card-title text-center">{genre.name}</h5>

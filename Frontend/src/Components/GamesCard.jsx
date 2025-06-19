@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function Games({ game }) {
+export default function GamesCard({ game }) {
   const imageUrl = `http://localhost:8080/images/${game.images?.[0]?.imagePath}`;
 
   return (
@@ -14,7 +14,7 @@ export default function Games({ game }) {
           src={imageUrl}
           alt={game.name}
           className="card-img-top object-fit-cover rounded-top"
-          style={{ height: "220px", width: "100%", objectFit: "cover" }}
+          style={{ height: "220px", width: "100%" }}
         />
         {/* Prezzo in badge */}
         <span className="badge bg-success position-absolute top-0 end-0 m-2">

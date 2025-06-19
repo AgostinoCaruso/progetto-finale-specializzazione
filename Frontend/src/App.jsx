@@ -7,6 +7,7 @@ import GamesPage from './Pages/GamesPage'
 import GameDetail from './Pages/GameDetail';
 import GenresPage from './Pages/GenresPage'
 import PlatformDetail from './Pages/PlatformDetail'
+import PlatformsPage from './Pages/PlatformsPage'
 import AboutUs from './Pages/AboutUs'
 import NotFound from './Pages/NotFound'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,7 +22,7 @@ function App() {
           <Route path='games' element={<GamesPage />} />
           <Route path="games/search" element={<GamesPage />} />
           <Route path='games/:id' element={<GameDetail />} />
-          {/* <Route path="platforms" element={<PlatformsPage />} /> */}
+          <Route path="platforms" element={<PlatformsPage />} />
           <Route path='platforms/:id' element={<PlatformDetail />} />
           <Route path="genres" element={<GenresPage />} />
           <Route path='genres/:id' element={<GenreDetail />} />

@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 import progetto.finale.org.progetto_finale_specializzazione.Model.Platforms;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.PlatformsRepository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 @Service
 public class PlatformsService {
 
@@ -20,10 +21,16 @@ public class PlatformsService {
         return platformsRepository.findAll();
     }
 
-    public Optional<Platforms> findById(Integer id){
+    public Page<Platforms> findAllPage(Pageable pageable) {
+
+        return platformsRepository.findAll(pageable);
+    }
+
+    public Optional<Platforms> findById(Integer id) {
         return platformsRepository.findById(id);
     }
-    public List<Platforms> findAllByNameAsc(){
+
+    public List<Platforms> findAllByNameAsc() {
         return platformsRepository.findAllByOrderByNameAsc();
     }
 

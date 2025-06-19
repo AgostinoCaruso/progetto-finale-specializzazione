@@ -11,7 +11,7 @@ export default function Pagination({ pageParam, changePage, totalPages, location
 
   return (
     <nav aria-label="Page navigation example" className="my-5" style={{
-      paddingTop: location.pathname === '/games' ? '0px' : '300px'
+      paddingTop: (location.pathname === '/games' || location.pathname === '/platforms') ? '0px' : '300px'
     }}
     >
       <ul className="pagination justify-content-center">

@@ -12,6 +12,7 @@ import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.GamesRepository;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.GenresRepository;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Platforms;
 
 @Service
 public class GamesService {
@@ -44,6 +45,10 @@ public class GamesService {
 
     public List<Games> findTop8GamesByGenre(Genres genre) {
         return gamesRepository.findTop8ByGenresOrderByScoreDesc(genre);
+    }
+
+    public List<Games> findTop8GamesByPlatform(Platforms platform) {
+        return gamesRepository.findTop8ByPlatformsOrderByScoreDesc(platform);
     }
 
     public Optional<Games> findById(Integer id) {
