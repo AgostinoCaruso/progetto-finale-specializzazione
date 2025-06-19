@@ -16,4 +16,10 @@ public interface GamesRepository extends JpaRepository<Games, Integer> {
 
         public List<Games> findTop8ByGenresInAndIdNot(List<Genres> genres, Integer id);
 
+        public List<Games> findTop8ByPlatformsIdOrderByScoreDesc(Integer platformId);
+
+        public List<Games> findTop3ByOrderByScoreDesc();
+
+        public List<Games> findTop8ByGenresOrderByScoreDesc(Genres genre);
+
 }

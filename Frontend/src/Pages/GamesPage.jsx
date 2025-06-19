@@ -18,31 +18,33 @@ export default function GamesPage() {
     const PAGE_SIZE = 12;
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+
         if (searchTerm) {
             fetchGamesBySearch(searchTerm, pageParam);
         } else {
             fetchAllGames(pageParam);
         }
     }, [searchTerm, pageParam]);
-    
+
     const fetchAllGames = (page) => {
         axios.get(`http://localhost:8080/api/games?page=${page}&size=${PAGE_SIZE}`)
-        .then(res => {
-            setGames(res.data.content);
-            setTotalPages(res.data.totalPages);
-        })
-        .catch(err => console.error(err));
+            .then(res => {
+                setGames(res.data.content);
+                setTotalPages(res.data.totalPages);
+            })
+            .catch(err => console.error(err));
     };
-    
+
     const fetchGamesBySearch = (query, page) => {
         axios.get(`http://localhost:8080/api/games/search?q=${query}&page=${page}&size=${PAGE_SIZE}`)
-        .then(res => {
-            setGames(res.data.content);
-            setTotalPages(res.data.totalPages);
-        })
-        .catch(err => console.error(err));
+            .then(res => {
+                setGames(res.data.content);
+                setTotalPages(res.data.totalPages);
+            })
+            .catch(err => console.error(err));
     };
-    
+
     const changePage = (newPage) => {
         const params = new URLSearchParams(location.search);
         params.set("page", newPage);
@@ -55,7 +57,7 @@ export default function GamesPage() {
                 {searchTerm ? `Search results for "${searchTerm}"` : "Games in Store"}
             </h1>
 
-            <div className="d-flex flex-wrap justify-content-start gap-4" style={{ gap: '1rem' }}>
+            <div className={`d-flex flex-wrap ${games.length > 4 ? 'justify-content-start' : 'justify-content-center'}`} style={{ gap: '1rem' }}>
                 {games.map(game => (
                     <div key={game.id} style={{ flex: '1 1 250px', maxWidth: '300px' }}>
                         <Games game={game} />
@@ -64,7 +66,7 @@ export default function GamesPage() {
             </div>
 
             {games.length > 0
-                ? <Pagination pageParam={pageParam} changePage={changePage} totalPages={totalPages}/>
+                ? <Pagination pageParam={pageParam} changePage={changePage} totalPages={totalPages} location={location} />
                 : <p></p>
             }
         </div>

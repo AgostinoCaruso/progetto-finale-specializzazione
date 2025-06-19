@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import progetto.finale.org.progetto_finale_specializzazione.Service.GamesService;
 import jakarta.validation.Valid;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
+
 import progetto.finale.org.progetto_finale_specializzazione.Model.Platforms;
 import progetto.finale.org.progetto_finale_specializzazione.Service.PlatformsService;
 
@@ -25,6 +27,9 @@ public class PlatformsController {
 
     @Autowired
     private PlatformsService platformsService;
+
+    @Autowired
+    private GamesService gamesService;
 
     @GetMapping
     public String index(@RequestParam(name = "search", required = false) String search, Model model,
@@ -47,7 +52,11 @@ public class PlatformsController {
     public String show(@PathVariable Integer id, Model model) {
 
         Platforms platform = platformsService.getById(id);
+
+        List<Games> topGames = gamesService.findTopGamesPlatform(id);
+
         model.addAttribute("platform", platform);
+        model.addAttribute("games", topGames);
 
         return "platforms/show";
     }

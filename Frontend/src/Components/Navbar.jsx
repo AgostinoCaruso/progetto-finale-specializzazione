@@ -53,6 +53,26 @@ export default function Navbar() {
                                     Games
                                 </NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink
+                                    to="/genres"
+                                    className={({ isActive }) =>
+                                        "nav-link fw-bold " + (isActive ? "text-danger" : "text-dark")
+                                    }
+                                >
+                                    Genres
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink
+                                    to="/aboutus"
+                                    className={({ isActive }) =>
+                                        "nav-link fw-bold " + (isActive ? "text-danger" : "text-dark")
+                                    }
+                                >
+                                    About us
+                                </NavLink>
+                            </li>
                         </ul>
 
                         {/* Search form */}

@@ -1,4 +1,4 @@
-export default function Pagination({ pageParam, changePage, totalPages }) {
+export default function Pagination({ pageParam, changePage, totalPages, location }) {
   // Calcolo intervallo centrale
   const startPage = Math.max(1, pageParam - 2);
   const endPage = Math.min(totalPages - 2, pageParam + 2);
@@ -10,7 +10,10 @@ export default function Pagination({ pageParam, changePage, totalPages }) {
   }
 
   return (
-    <nav aria-label="Page navigation example" className="my-5">
+    <nav aria-label="Page navigation example" className="my-5" style={{
+      paddingTop: location.pathname === '/games' ? '0px' : '300px'
+    }}
+    >
       <ul className="pagination justify-content-center">
 
         {/* Previous */}

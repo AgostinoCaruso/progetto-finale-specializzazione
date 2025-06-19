@@ -76,7 +76,7 @@
             <div class="card w-100 h-100 d-flex flex-column bg-light">
                 <!-- ANCORABILE: Tutta l'area cliccabile escluso il delete -->
                 <a th:href="@{/games/{id}(id=*{id})}" class="text-decoration-none text-reset flex-grow-1">
-                    <div class="card-body fixed-height-card d-flex flex-column card-text">
+                    <div class="card-body fixed-height-card d-flex flex-column card-text" th:object="${game}">
                         <div>
                             <h4
                                 th:text="${game.name.length() > 20} ? ${game.name.substring(0, 20)} + '...' : ${game.name}">
@@ -84,11 +84,18 @@
                             </h4>
                             <h5>
                                 <strong>Publisher:</strong>
-                                <em th:text="*{publisher}">Publisher Name</em>
+                                <em
+                                    th:text="${game.publisher.length() > 10} ? ${game.publisher.substring(0, 10)} + '...' : ${game.publisher}">
+                                    Publisher Name
+                                </em>
                             </h5>
                             <h5>
                                 <strong>Developer:</strong>
-                                <em th:text="*{developer}">Developer Name</em>
+                                <em
+                                    th:text="${game.developer.length() > 10} ? ${game.developer.substring(0, 10)} + '...' : ${game.developer}">
+                                    Publisher Name
+                                </em>
+
                             </h5>
                             <h5>
                                 <strong>Price:</strong>
@@ -159,10 +166,11 @@
                             <div th:if="${game.images != null and #lists.size(game.images) > 0}">
 
                                 <!-- Slide immagini -->
-                                <div class="carousel-inner">
+                                <div class="carousel-inner ">
                                     <div th:each="img, stat : *{images}"
-                                        th:class="'carousel-item ' + (${stat.index == 0} ? 'active' : '')">
+                                        th:class=" 'carousel-item ' + (${stat.index == 0} ? 'active' : '') + ''">
                                         <img th:src="@{'/uploads/' + ${img.imagePath}}" class="d-block w-100"
+                                            style="min-width: 1000px; min-height: 800px; overflow: hidden;"
                                             alt="Game Image" />
                                     </div>
                                 </div>
@@ -215,10 +223,12 @@
                         </div>
                         <div class="row">
                             <div th:each="platform : *{platforms}" class="col-3 mb-3 d-flex justify-content-center">
-                                <div style="width: 150px; height: 100px; overflow: hidden;">
-                                    <img th:src="${platform.logoUrl}" th:alt="${platform.name}"
-                                        style="width: 100%; height: 100%; object-fit: cover;" class="rounded">
-                                </div>
+                                <a th:href="@{/platforms/{id}(id=${platform.id})}">
+                                    <div style="width: 150px; height: 100px; overflow: hidden;">
+                                        <img th:src="${platform.logoUrl}" th:alt="${platform.name}"
+                                            style="width: 100%; height: 100%; object-fit: cover;" class="rounded">
+                                    </div>
+                                </a>
                             </div>
                         </div>
 
@@ -228,7 +238,7 @@
         </div>
 
         <div th:fragment="pagination">
-            <nav aria-label="Page navigation example" class="my-5">
+            <nav aria-label="Page navigation example" class="my-5 pagination-margin">
                 <ul class="pagination justify-content-center">
 
                     <!-- Previous -->

@@ -11,12 +11,16 @@ import org.springframework.data.domain.PageRequest;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
 import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.GamesRepository;
+import progetto.finale.org.progetto_finale_specializzazione.Repository.GenresRepository;
 
 @Service
 public class GamesService {
 
     @Autowired
     private GamesRepository gamesRepository;
+
+    @Autowired
+    private GenresRepository genresRepository;
 
     public Page<Games> findAll(Pageable pageable) {
         return gamesRepository.findAll(pageable);
@@ -26,8 +30,20 @@ public class GamesService {
         return gamesRepository.findByNameContainingIgnoreCase(search, pageable);
     }
 
-    public List<Games> findRecomandation(List<Genres> genres, Integer id){
+    public List<Games> findRecomandation(List<Genres> genres, Integer id) {
         return gamesRepository.findTop8ByGenresInAndIdNot(genres, id);
+    }
+
+    public List<Games> findTopGamesPlatform(Integer id) {
+        return gamesRepository.findTop8ByPlatformsIdOrderByScoreDesc(id);
+    }
+
+    public List<Games> topScore() {
+        return gamesRepository.findTop3ByOrderByScoreDesc();
+    }
+
+    public List<Games> findTop8GamesByGenre(Genres genre) {
+        return gamesRepository.findTop8ByGenresOrderByScoreDesc(genre);
     }
 
     public Optional<Games> findById(Integer id) {

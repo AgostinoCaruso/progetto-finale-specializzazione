@@ -18,6 +18,11 @@ export default function Footer() {
                                         Games
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="/aboutus" className="text-light text-decoration-none">
+                                        About
+                                    </a>
+                                </li>
                             </ul>
                         </div>
 
@@ -80,7 +85,7 @@ export default function Footer() {
                                 style={{ height: "50px" }}
                             />
                             <p className="mt-2 mb-0">
-                                Made with ❤️ by YourCompany | Privacy Policy | Terms of Service
+                                Privacy Policy | Terms of Service
                             </p>
                         </div>
                     </div>

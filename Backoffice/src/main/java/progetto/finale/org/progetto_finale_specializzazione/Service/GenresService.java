@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import progetto.finale.org.progetto_finale_specializzazione.Model.Genres;
 import progetto.finale.org.progetto_finale_specializzazione.Repository.GenresRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import progetto.finale.org.progetto_finale_specializzazione.Model.Games;
 
 @Service
 public class GenresService {
@@ -20,7 +23,14 @@ public class GenresService {
         return genresRepository.findAll();
     }
 
-    public Optional<Genres> findById(Integer id){
+
+
+    public Page<Genres> findAllPage(Pageable pageable) {
+
+        return genresRepository.findAll(pageable);
+    }
+
+    public Optional<Genres> findById(Integer id) {
         return genresRepository.findById(id);
     }
 

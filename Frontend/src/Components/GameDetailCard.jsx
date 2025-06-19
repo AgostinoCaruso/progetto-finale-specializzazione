@@ -1,6 +1,7 @@
 import { Container, Row, Col, Carousel, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Score from '../Components/Score';
+import axios from 'axios';
 
 const imageUrl = `http://localhost:8080/images/`;
 
@@ -68,10 +69,10 @@ export default function GameDetailCard({ game, recommendedGames }) {
                     <>
                         <h4>Recommended Games</h4>
                         <Row>
-                            {recommendedGames.slice(0,8).map(g => (
+                            {recommendedGames.map(g => (
                                 <Col key={g.id} md={3} className='my-3'>
                                     <Link to={`/games/${g.id}`} className="text-decoration-none">
-                                        <div className="card mb-3 shadow-sm h-100 d-flex flex-column">
+                                        <div className="card mb-3 shadow-sm h-100 d-flex flex-column game-card">
                                             <img src={`http://localhost:8080/images/${g.images[0].imagePath}`} className="card-img-top" alt={g.name} />
                                             <div className="card-body d-flex flex-column">
                                                 <h6 className="card-title">{g.name}</h6>

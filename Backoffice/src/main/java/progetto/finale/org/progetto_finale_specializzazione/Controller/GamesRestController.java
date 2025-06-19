@@ -50,6 +50,12 @@ public class GamesRestController {
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
+    @GetMapping("/topscore")
+    public ResponseEntity<List<Games>> topScore() {
+        List<Games> results = gamesService.topScore();
+        return new ResponseEntity<>(results, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}/recommendations")
     public ResponseEntity<List<Games>> getRecommendedGames(@PathVariable Integer id) {
         Optional<Games> optionalGame = gamesService.findById(id);

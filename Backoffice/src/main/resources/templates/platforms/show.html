@@ -31,25 +31,67 @@
 
 <body>
     <div>
-        <!-- Navbar -->
         <div th:replace="~{fragments :: navbar}"></div>
 
-        <!-- Main Content -->
-        <main>
-            <div class="platform-card text-center" th:object="${platform}">
-                <p class="platform-title" th:text="*{name}">Genre Name</p>
-                <div class="img overflow-hidden text-center flex-grow-1 mb-2 card-img">
-                    <img th:src="${platform.logoUrl}" alt=""
-                        class="img-fluid w-100 h-100 object-fit-cover rounded px-1">
+        <main class="container my-4 pad-bottom">
+            <div class="platform-card text-center shadow p-4 rounded bg-light  d-block" th:object="${platform}">
+
+                <p class="platform-title fs-4 fw-bold mb-3" th:text="*{name}">Platform Name</p>
+
+                <div class="img overflow-hidden text-center mb-3 card-img" style="height: 200px;">
+                    <img th:src="${platform.logoUrl}" alt="Platform Logo"
+                        class="img-fluid w-100 h-100 object-fit-contain rounded">
+                </div>
+                <Strong> Description
+                    <em class="text-secondary" th:text="*{description}"> </em>
+                </Strong>
+            </div>
+
+            <div class="row">
+                <div class="col-3 mb-4" th:each="game : ${games}">
+                    <div class="card w-100 h-100 d-flex flex-column bg-light my-5">
+
+                        <!-- Area cliccabile esclusa la parte bottoni -->
+                        <a th:href="@{/games/{id}(id=${game.id})}"
+                            class="text-decoration-none text-reset flex-grow-1 d-flex flex-column">
+                            <div class="card-body fixed-height-card d-flex flex-column card-text">
+                                <div>
+                                    <h4
+                                        th:text="${game.name.length() > 20} ? ${game.name.substring(0, 20)} + '...' : ${game.name}">
+                                        Game Name
+                                    </h4>
+                                    <h5>
+                                        <strong>Publisher:</strong>
+                                        <em th:text="${game.publisher}">Publisher Name</em>
+                                    </h5>
+                                    <h5>
+                                        <strong>Developer:</strong>
+                                        <em th:text="${game.developer}">Developer Name</em>
+                                    </h5>
+                                    <h5>
+                                        <strong>Price:</strong>
+                                        <em th:text="${game.price} + '$'">Price</em>
+                                    </h5>
+                                </div>
+                            </div>
+
+                            <div th:if="${game.images != null and #lists.size(game.images) > 0}"
+                                class="img overflow-hidden text-center flex-grow-1 mb-2 card-img">
+                                <img th:src="@{'/uploads/' + ${game.images[0].imagePath}}" alt="Game Image"
+                                    class="img-fluid w-100 h-100 object-fit-cover rounded px-1">
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
+
+
         </main>
 
-        <!-- Footer -->
+
         <div th:replace="~{fragments :: footer}"></div>
     </div>
 
-    <!-- Bootstrap Script -->
     <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
 </body>
 

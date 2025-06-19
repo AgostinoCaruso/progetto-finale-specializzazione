@@ -8,24 +8,33 @@ import { Link } from 'react-router';
 export default function HomePage() {
     const [games, setGames] = useState([]);
     const [platforms, setPlatforms] = useState([]);
+    const [topScore, setTopScore] = useState([]);
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/games")
-            .then(res =>{
-                console.log(res.data.content);
+            .then(res => {
+                //console.log(res.data.content);
                 setGames(res.data.content);
             })
             .catch(err => console.error(err));
-    }, []);
 
-    useEffect(() => {
         axios.get("http://localhost:8080/api/platforms")
             .then(res => {
-                console.log("Fetched platforms:", res.data);
+                //console.log("Fetched platforms:", res.data);
                 setPlatforms(res.data);
             })
             .catch(err => console.error(err));
+
+        axios.get("http://localhost:8080/api/games/topscore")
+            .then(res => {
+                // res.data.forEach((game, index) => {
+                //     console.log(`Game ${index}:`, game);
+                // });
+                setTopScore(res.data);
+            })
+            .catch(err => console.err(err));
     }, []);
+
 
     const platformChunks = chunkArray(platforms, 4);
 
@@ -43,19 +52,16 @@ export default function HomePage() {
                 <div className=" my-5 ">
                     <h2 className="mb-3">Top Games by Score</h2>
                     <div className="row d-flex justify-content-center">
-                        {games
-                            .sort((a, b) => b.score - a.score)  // ordina per score decrescente
-                            .slice(0, 3)
-                            .map((game) => (
-                                <div key={game.id} className="col-6 col-md-3 mb-4">
-                                    <GamesCard game={game} />
-                                </div>
-                            ))}
+                        {topScore.map((game) => (
+                            <div key={game.id} className="col-6 col-md-3 mb-4">
+                                <GamesCard game={game} />
+                            </div>
+                        ))}
                     </div>
                 </div>
 
                 <Container className="my-5">
-                    <h2 className="mb-3">Top Consoles</h2>
+                    <h2 className="mb-3">Top Platforms to play</h2>
                     <Carousel>
                         {platformChunks.map((group, index) => (
                             <Carousel.Item key={index}>

@@ -110,6 +110,10 @@ footer {
   display: block;
 }
 
+.bottom-space {
+  padding-bottom: 500px !important;
+
+}
 
 .game-card {
   height: 100%;

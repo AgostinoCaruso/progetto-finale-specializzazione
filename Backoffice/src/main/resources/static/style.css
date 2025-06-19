@@ -38,6 +38,14 @@
   height: calc(100% * 0.1);
 }
 
+.pad-bottom {
+  padding-bottom: 600px;
+  background-color: rgba(0, 255, 0, 0.1);
+  /* per vedere lo spazio */
+}
+.pagination-margin{
+  margin: 0px 100px;
+}
 /* footer */
 footer a:hover {
   text-decoration: underline;

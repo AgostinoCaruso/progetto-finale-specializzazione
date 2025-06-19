@@ -11,17 +11,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Column;
 
 @Entity
-@Table(name="platforms")
+@Table(name = "platforms")
 public class Platforms {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotBlank(message = "This camp cannot be null or blank")
     private String name;
+
+    @Lob
+    @Column(length = 500)
+    @NotBlank(message = "This camp cannot be null or blank")
+    private String description;
 
     @NotBlank(message = "This camp cannot be null or blank")
     public String logoUrl;
@@ -32,6 +39,14 @@ public class Platforms {
 
     public String getLogoUrl() {
         return this.logoUrl;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setLogoUrl(String logoUrl) {
@@ -45,6 +60,7 @@ public class Platforms {
     public void setGames(List<Games> games) {
         this.games = games;
     }
+
     public Integer getId() {
         return this.id;
     }
@@ -59,5 +75,5 @@ public class Platforms {
 
     public void setName(String name) {
         this.name = name;
-    }    
+    }
 }
