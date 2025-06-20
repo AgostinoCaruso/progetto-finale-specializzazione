@@ -5,7 +5,7 @@ export default function Footer() {
             <footer className=" text-light pt-4">
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-4 mb-3">
+                        <div className="col-md-6 mb-3">
                             <h5>Navigation</h5>
                             <ul className="list-unstyled">
                                 <li>
@@ -19,6 +19,16 @@ export default function Footer() {
                                     </a>
                                 </li>
                                 <li>
+                                    <a href="/genres" className="text-light text-decoration-none">
+                                        Genres
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/platfroms" className="text-light text-decoration-none">
+                                        Platforms
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="/aboutus" className="text-light text-decoration-none">
                                         About
                                     </a>
@@ -26,7 +36,7 @@ export default function Footer() {
                             </ul>
                         </div>
 
-                        <div className="col-md-4 mb-3">
+                        {/* <div className="col-md-4 mb-3">
                             <h5>About Us</h5>
                             <ul className="list-unstyled">
                                 <li>
@@ -50,7 +60,7 @@ export default function Footer() {
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> */}
 
                         <div className="col-md-4 mb-3">
                             <h5>Follow Us</h5>
@@ -85,7 +95,7 @@ export default function Footer() {
                                 style={{ height: "50px" }}
                             />
                             <p className="mt-2 mb-0">
-                                Privacy Policy | Terms of Service
+                                 Privacy Policy | Terms of Service
                             </p>
                         </div>
                     </div>
