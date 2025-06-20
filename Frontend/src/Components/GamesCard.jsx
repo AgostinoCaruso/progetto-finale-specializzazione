@@ -8,7 +8,6 @@ export default function GamesCard({ game }) {
       to={`/games/${game.id}`}
       className="card game-card text-decoration-none text-dark shadow-sm border-0 h-100"
     >
-      {/* Immagine */}
       <div className="game-img-container position-relative">
         <img
           src={imageUrl}
@@ -16,13 +15,11 @@ export default function GamesCard({ game }) {
           className="card-img-top object-fit-cover rounded-top"
           style={{ height: "220px", width: "100%" }}
         />
-        {/* Prezzo in badge */}
         <span className="badge bg-success position-absolute top-0 end-0 m-2">
           ${game.price}
         </span>
       </div>
 
-      {/* Dettagli */}
       <div className="card-body d-flex flex-column justify-content-between">
         <h5 className="card-title fw-bold ">{game.name}</h5>
         <p className="card-text mb-1">

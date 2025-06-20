@@ -32,6 +32,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
+//serve per gestire il flusso di create date, update date
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "games")
 public class Games {
@@ -44,22 +45,22 @@ public class Games {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "This camp cannot be null, blank")
+    @NotBlank(message = "The camp name cannot be null, blank")
     private String name;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be higher than zero")
-    @NotNull(message = "This camp cannot be null")
+    @NotNull(message = "The price camp cannot be null")
     private BigDecimal price;
 
     @Min(1)
     @Max(10)
-    @NotNull(message = "This camp cannot be null or blank")
+    @NotNull(message = "The score camp cannot be null or blank")
     private Double score;
 
-    @NotBlank(message = "This camp cannot be null or blank")
+    @NotBlank(message = "The publisher camp cannot be null or blank")
     private String publisher;
 
-    @NotBlank(message = "This camp cannot be null or blank")
+    @NotBlank(message = "The developer camp cannot be null or blank")
     private String developer;
 
     @CreatedDate
@@ -74,12 +75,13 @@ public class Games {
     @NotBlank(message = "This camp cannot be null or blank")
     private String description;
 
-    // qua collego ad un gioco uno o piu generi
+    // qua collego n gioci a n generi
     @ManyToMany
     @JsonManagedReference
     @JoinTable(name = "game_genre", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genres> genres = new ArrayList<>();
 
+    // qua collego n giochi a n piattaforme
     @ManyToMany
     @JsonManagedReference
     @JoinTable(name = "game_platform", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "platform_id"))

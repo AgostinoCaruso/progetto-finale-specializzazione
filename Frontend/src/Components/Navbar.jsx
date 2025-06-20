@@ -21,13 +21,11 @@ export default function Navbar() {
         <div className="navbar-mine bg-white shadow-sm">
             <nav className="navbar navbar-expand-lg">
                 <div className="container">
-                    {/* Logo */}
                     <NavLink to="/" className="navbar-brand d-flex align-items-center">
                         <img src={logo} alt="Logo" width="100%" height="50px" className="me-2" />
                         <span className="fw-bold text-dark"></span>
                     </NavLink>
 
-                    {/* Toggle per mobile */}
                     <button
                         className="navbar-toggler"
                         type="button"
@@ -40,7 +38,6 @@ export default function Navbar() {
                         <span className="navbar-toggler-icon"></span>
                     </button>
 
-                    {/* Menu e search */}
                     <div className="collapse navbar-collapse" id="navbarContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
@@ -85,7 +82,6 @@ export default function Navbar() {
                             </li>
                         </ul>
 
-                        {/* Search form */}
                         <form className="d-flex" onSubmit={handleSearchSubmit}>
                             <input
                                 type="search"

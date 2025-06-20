@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 export default function GenreDetailCard({ genre, relatedGames }) {
   return (
     <Container className="my-5">
-      {/* <h2 className="mb-4 text-center">{genre.name}</h2> */}
 
       {relatedGames.length > 0 ? (
         <>

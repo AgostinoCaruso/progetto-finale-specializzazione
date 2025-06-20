@@ -10,7 +10,6 @@ export default function GameDetailCard({ game, recommendedGames }) {
         <>
             <Container className="my-5">
                 <Row className="mb-4">
-                    {/* Immagini */}
                     <Col md={8}>
                         <Carousel>
                             {game.images.map((img, index) => (
@@ -26,7 +25,6 @@ export default function GameDetailCard({ game, recommendedGames }) {
                         </Carousel>
                     </Col>
 
-                    {/* Dati del gioco */}
                     <Col md={4}>
                         <h2>{game.name}</h2>
                         <h4 className="text-success mb-3">${game.price.toFixed(2)}</h4>
@@ -57,7 +55,6 @@ export default function GameDetailCard({ game, recommendedGames }) {
                     </Col>
                 </Row>
 
-                {/* Descrizione */}
                 <Row>
                     <Col>
                         <h4>Description</h4>
@@ -81,7 +78,7 @@ export default function GameDetailCard({ game, recommendedGames }) {
                                                         <Badge key={genre.id} bg="secondary" className="me-1">{genre.name}</Badge>
                                                     ))}
                                                 </div>
-                                                <div className="mt-auto"> {/* spinge il prezzo in basso */}
+                                                <div className="mt-auto">
                                                     <p className="card-text text-success">${g.price}</p>
                                                 </div>
                                             </div>

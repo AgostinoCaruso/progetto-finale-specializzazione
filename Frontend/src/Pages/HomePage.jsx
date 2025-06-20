@@ -38,12 +38,10 @@ export default function HomePage() {
     const platformChunks = chunkArray(platforms, 4);
     const genresChunks = chunkArray(genres, 4);
 
-    // Console immagini per il carosello (esempio statico)
 
 
     return (
         <>
-            {/* Jumbotron */}
             <JumboCarousel />
 
             <div className='container'>

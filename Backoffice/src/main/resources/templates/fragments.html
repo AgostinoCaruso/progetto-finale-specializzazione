@@ -195,6 +195,14 @@
 
 
                 <div class="d-flex flex-column align-items-start w-100 mt-5">
+                    <div class="d-flex justify-content-between">
+                        <div class="me-auto pe-5">
+                            <h4 th:text="'created date: ' + *{createdDate}" ></h4>
+                        </div>
+                        <div class="ms-auto pe-5">
+                            <h4 th:text="'last modified date: ' + *{lastModifiedDate}" /></h4>
+                        </div>
+                    </div>
                     <h3>
                         <strong>Description: </strong>
                         <em th:text="*{description}">Publisher Name</em>

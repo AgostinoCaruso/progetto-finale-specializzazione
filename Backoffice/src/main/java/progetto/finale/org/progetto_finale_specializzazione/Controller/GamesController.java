@@ -82,11 +82,6 @@ public class GamesController {
         return "games/show";
     }
 
-    // @GetMapping("/{id}/recommendations")
-    // public List<Games> getRecommendedGames(@PathVariable Integer id) {
-    //     return gamesService.findRecomandation(id);
-    // }
-
     @GetMapping("/create")
     public String create(Model model) {
 
@@ -120,26 +115,34 @@ public class GamesController {
 
         // Cicla su tutti i file ricevuti
         for (MultipartFile imageFile : imageFiles) {
+            //vede se non è empty
             if (!imageFile.isEmpty()) {
                 try {
+                    //Crea nome univoco
                     String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+                    //costruisce il path completo( es: D://Boolean/uploads/{nome_file})
                     Path filepath = Paths.get(uploadDir, filename);
+                    //crea la cartella di destinazione(uploads) se non esiste
                     Files.createDirectories(filepath.getParent());
+                    //salva il contenuto nel file
                     Files.write(filepath, imageFile.getBytes());
-
+                    //Crea una nuova entità Images
                     Images image = new Images();
+                    //salva il nome del file
                     image.setImagePath(filename);
-                    image.setGame(formGame); // Associa immagine al gioco
+                    //associa l images al games
+                    image.setGame(formGame);
                     System.out.println("Immagine salvata: " + filename);
                     System.out.println("Game associato: " + formGame.getName());
-
+                    //aggiunge l oggetto images alla lista images del gioco
                     formGame.getImages().add(image);
                 } catch (IOException e) {
-                    e.printStackTrace(); // puoi anche loggare o gestire meglio l'errore
+                    //errore in caso va storto qualcosa
+                    e.printStackTrace();
                 }
             }
         }
-
+        
         gamesService.create(formGame);
         redirectAttributes.addFlashAttribute("successMessage", "Gioco creato con successo!");
 
@@ -187,7 +190,6 @@ public class GamesController {
 
         // Rimuovi immagini dal gioco e cancella file + record DB
         if (deleteImageIds != null && !deleteImageIds.isEmpty()) {
-
             // 1) Prima cancella fisicamente e dal DB le immagini da eliminare
             for (Integer imgId : deleteImageIds) {
                 imagesService.findById(imgId).ifPresent(imgToDelete -> {
@@ -203,10 +205,8 @@ public class GamesController {
                     imagesService.delete(imgToDelete);
                 });
             }
-
             // 2) Poi rimuovi la relazione con le immagini dal gioco
             gameInDb.getImages().removeIf(img -> deleteImageIds.contains(img.getId()));
-
             // 3) Aggiorna il gioco per sincronizzare la relazione
             gamesService.update(gameInDb);
         }

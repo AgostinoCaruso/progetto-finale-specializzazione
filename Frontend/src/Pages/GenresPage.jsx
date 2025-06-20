@@ -36,7 +36,7 @@ export default function GenresPage() {
     };
 
     const goToGenre = (id) => {
-        navigate(`/genres/${id}`);  // Modifica questo percorso se vuoi
+        navigate(`/genres/${id}`);
     };
 
     return (

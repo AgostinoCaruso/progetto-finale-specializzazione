@@ -5,7 +5,6 @@ export default function Score({ num }) {
         const stars = [];
         let remaining = num;
 
-        // 5 stelle massime
         for (let i = 0; i < 5; i++) {
             if (remaining >= 2) {
                 stars.push(<FaStar key={i} color="gold" />);
