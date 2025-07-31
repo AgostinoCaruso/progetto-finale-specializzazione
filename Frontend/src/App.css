@@ -8,7 +8,6 @@
   text-align: center;
 }
 
-
 body {
   background-color: black;
   overflow-x: hidden;
@@ -33,10 +32,8 @@ footer {
   color: white;
   padding: 1rem 0;
   z-index: 1000;
-  width: calc(100vw - 15px);
+  width: 100vw;
 }
-
-
 
 .logo {
   height: 6em;
@@ -77,9 +74,6 @@ footer {
   color: #888;
 }
 
-
-
-
 .carousel-control-prev,
 .carousel-control-next {
   width: 5%;
@@ -97,17 +91,19 @@ footer {
   padding: 0px 150px;
 }
 
+.carousel-image {
+  max-height: 400px;
+  object-fit: cover;
+}
+
 .fullscreen-jumbo {
   width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  overflow: hidden;
 }
 
 .fullscreen-jumbo img {
   width: 100%;
   height: auto;
   object-fit: cover;
-  display: block;
 }
 
 .bottom-space {
@@ -150,4 +146,41 @@ footer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.genre-box {
+  width: min-content;
+  padding: 20px 30px;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  background-color: #fff;
+}
+.des-game-detail{
+  font-size: 1.3em;
+}
+
+/* Quando diventa orizzontale su schermi piccoli */
+@media (max-width: 900px) {
+
+  .carousel-image {
+    min-height: 550px;
+  }
+
+  .bord-carousel {
+    padding: 0px 100px;
+  }
+}
+
+@media (max-width: 568px) {
+  .bord-carousel {
+    padding: 0px 50px;
+  }
+    .carousel-image {
+    min-height: 400px;
+  }
+  .des-game-detail{
+  font-size: 0.9em;
+}
+
+
 }

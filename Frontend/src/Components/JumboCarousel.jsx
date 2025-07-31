@@ -12,10 +12,8 @@ export default function JumboCarousel() {
         <Carousel>
             {jumboImages.map((item, index) => (
                 <Carousel.Item key={index}>
-                    <Link to={item.link} style={{ display: 'block' }}>
-                        <div 
-                            className='fullscreen-jumbo'
-                        >
+                    <Link to={item.link}>
+                        <div className='fullscreen-jumbo'>
                             <img
                                 src={item.src}
                                 alt={`Jumbotron image ${index + 1}`}

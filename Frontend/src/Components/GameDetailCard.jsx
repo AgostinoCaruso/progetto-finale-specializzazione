@@ -15,7 +15,7 @@ export default function GameDetailCard({ game, recommendedGames }) {
                             {game.images.map((img, index) => (
                                 <Carousel.Item key={index}>
                                     <img
-                                        className="d-block w-100 rounded"
+                                        className="d-block w-100 rounded carousel-image"
                                         src={`http://localhost:8080/images/${img.imagePath}`}
                                         alt={`Image ${index + 1}`}
                                         style={{ maxHeight: '400px', objectFit: 'cover' }}
@@ -25,7 +25,7 @@ export default function GameDetailCard({ game, recommendedGames }) {
                         </Carousel>
                     </Col>
 
-                    <Col md={4}>
+                    <Col md={4} className='mt-4'>
                         <h2>{game.name}</h2>
                         <h4 className="text-success mb-3">${game.price.toFixed(2)}</h4>
 
@@ -57,8 +57,8 @@ export default function GameDetailCard({ game, recommendedGames }) {
 
                 <Row>
                     <Col>
-                        <h4>Description</h4>
-                        <p className="lead">{game.description}</p>
+                        <h4 >Description</h4>
+                        <p className='des-game-detail'>{game.description}</p>
                     </Col>
                 </Row>
 

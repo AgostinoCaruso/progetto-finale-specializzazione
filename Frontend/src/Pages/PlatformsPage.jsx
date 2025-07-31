@@ -43,7 +43,7 @@ export default function PlatformsPage() {
         <div className="container my-4">
             <h1 className="mb-4">Platforms</h1>
 
-            <div className={`d-flex flex-wrap ${platforms.length > 4 ? 'justify-content-start' : 'justify-content-center'} gap-4`} style={{ gap: '1rem' }}>
+            <div className={`d-flex flex-wrap justify-content-center gap-4`} style={{ gap: '1rem' }}>
                 {platforms.map(platform => (
                     <div
                         key={platform.id}

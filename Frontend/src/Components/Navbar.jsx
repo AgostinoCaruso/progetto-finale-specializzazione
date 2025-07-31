@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
     const [query, setQuery] = useState("");
+    const [menuOpen, setMenuOpen] = useState(false);  // stato per apri/chiudi menu
     const navigate = useNavigate();
 
     const handleSearchSubmit = (e) => {
@@ -13,6 +14,12 @@ export default function Navbar() {
             navigate(`/games/search?q=${encodeURIComponent(query.trim())}`);
             setQuery("");
         }
+        setMenuOpen(false);  // chiudo il menu quando fai ricerca
+    };
+
+    // Funzione per chiudere il menu quando clicchi su un link
+    const handleLinkClick = () => {
+        setMenuOpen(false);
     };
 
     const logo = "/logo.png";
@@ -21,7 +28,7 @@ export default function Navbar() {
         <div className="navbar-mine bg-white shadow-sm">
             <nav className="navbar navbar-expand-lg">
                 <div className="container">
-                    <NavLink to="/" className="navbar-brand d-flex align-items-center">
+                    <NavLink to="/" className="navbar-brand d-flex align-items-center" onClick={handleLinkClick}>
                         <img src={logo} alt="Logo" width="100%" height="50px" className="me-2" />
                         <span className="fw-bold text-dark"></span>
                     </NavLink>
@@ -32,17 +39,19 @@ export default function Navbar() {
                         data-bs-toggle="collapse"
                         data-bs-target="#navbarContent"
                         aria-controls="navbarContent"
-                        aria-expanded="false"
+                        aria-expanded={menuOpen}
                         aria-label="Toggle navigation"
+                        onClick={() => setMenuOpen(prev => !prev)}
                     >
                         <span className="navbar-toggler-icon"></span>
                     </button>
 
-                    <div className="collapse navbar-collapse" id="navbarContent">
+                    <div className={`collapse navbar-collapse${menuOpen ? " show" : ""}`} id="navbarContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 <NavLink
                                     to="/games"
+                                    onClick={handleLinkClick}  // chiudo menu cliccando link
                                     className={({ isActive }) =>
                                         "nav-link fw-bold " + (isActive ? "text-danger" : "text-dark")
                                     }
@@ -53,6 +62,7 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <NavLink
                                     to="/genres"
+                                    onClick={handleLinkClick}
                                     className={({ isActive }) =>
                                         "nav-link fw-bold " + (isActive ? "text-danger" : "text-dark")
                                     }
@@ -63,6 +73,7 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <NavLink
                                     to="/platforms"
+                                    onClick={handleLinkClick}
                                     className={({ isActive }) =>
                                         "nav-link fw-bold " + (isActive ? "text-danger" : "text-dark")
                                     }
@@ -73,6 +84,7 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <NavLink
                                     to="/aboutus"
+                                    onClick={handleLinkClick}
                                     className={({ isActive }) =>
                                         "nav-link fw-bold " + (isActive ? "text-danger" : "text-dark")
                                     }

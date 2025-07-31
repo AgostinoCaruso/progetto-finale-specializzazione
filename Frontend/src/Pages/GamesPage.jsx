@@ -57,9 +57,9 @@ export default function GamesPage() {
                 {searchTerm ? `Search results for "${searchTerm}"` : "Games in Store"}
             </h1>
 
-            <div className={`d-flex flex-wrap ${games.length > 4 ? 'justify-content-start' : 'justify-content-center'}`} style={{ gap: '1rem' }}>
+            <div className={`d-flex flex-wrap justify-content-center`} style={{ gap: '1rem' }}>
                 {games.map(game => (
-                    <div key={game.id} style={{ flex: '1 1 250px', maxWidth: '300px' }}>
+                    <div key={game.id} style={{ flex: '1 1 250px', maxWidth: '300px' }} className={`${game.id === games.length -1 ? 'justify-content-start' : 'justify-content-center'}`} >
                         <Games game={game} />
                     </div>
                 ))}
