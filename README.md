@@ -1,4 +1,4 @@
-# GameStopFake 🎮
+# GameSpot 🎮
 
 **GameStopFake** è una web app ispirata al sito di GameStop, dove gli utenti possono esplorare giochi e scoprirne i dettagli e i correlati.  
 
